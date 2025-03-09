@@ -1,0 +1,34 @@
+[
+  {
+    "title": "AI-Powered Recommendation Engine",
+    "description": "A sophisticated recommendation system using collaborative filtering and deep learning to provide personalized content suggestions based on user behavior and preferences.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Python", "TensorFlow", "Flask", "AWS", "Redis"],
+    "github": "https://github.com",
+    "live": "https://example.com"
+  },
+  {
+    "title": "Real-time Data Analytics Platform",
+    "description": "A scalable platform for processing and visualizing streaming data in real-time, enabling businesses to monitor KPIs and detect anomalies instantly.",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Kafka", "Spark", "Elasticsearch", "React", "D3.js"],
+    "github": "https://github.com",
+    "live": "https://example.com"
+  },
+  {
+    "title": "Natural Language Processing API",
+    "description": "A comprehensive NLP API that provides sentiment analysis, entity recognition, text summarization, and language translation capabilities for multiple languages.",
+    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Python", "PyTorch", "FastAPI", "Docker", "BERT"],
+    "github": "https://github.com",
+    "live": "https://example.com"
+  },
+  {
+    "title": "Microservices Architecture",
+    "description": "A robust microservices-based e-commerce platform with service discovery, API gateway, and event-driven communication for high scalability and resilience.",
+    "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
+    "technologies": ["Java", "Spring Boot", "Kubernetes", "RabbitMQ", "MongoDB"],
+    "github": "https://github.com",
+    "live": "https://example.com"
+  }
+]

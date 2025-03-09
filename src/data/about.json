@@ -1,0 +1,33 @@
+{
+  "intro": [
+    "I'm a passionate technologist with over 10 years of experience building innovative solutions across software engineering, data science, and artificial intelligence. My journey began with traditional software development, evolved through big data analytics, and now focuses on cutting-edge AI applications.",
+    "With a background in Computer Science and Machine Learning, I combine technical expertise with a deep understanding of business needs to deliver impactful solutions. I thrive in collaborative environments and enjoy tackling complex problems that require interdisciplinary approaches.",
+    "When I'm not coding or training models, you'll find me contributing to open-source projects, mentoring aspiring developers, or exploring the latest advancements in technology."
+  ],
+  "expertise": [
+    {
+      "title": "Software Engineering",
+      "icon": "Code",
+      "color": "purple",
+      "description": "Building scalable, maintainable applications with modern frameworks and best practices."
+    },
+    {
+      "title": "Data Science",
+      "icon": "Database",
+      "color": "blue",
+      "description": "Extracting insights from complex datasets to drive data-informed decisions."
+    },
+    {
+      "title": "AI Development",
+      "icon": "Brain",
+      "color": "green",
+      "description": "Creating intelligent systems using machine learning and deep learning techniques."
+    },
+    {
+      "title": "Problem Solving",
+      "icon": "Lightbulb",
+      "color": "yellow",
+      "description": "Approaching complex challenges with analytical thinking and creative solutions."
+    }
+  ]
+}

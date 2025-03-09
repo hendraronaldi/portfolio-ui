@@ -1,0 +1,36 @@
+{
+  "name": "Alex Chen",
+  "title": "Software Engineer | Data Scientist | AI Specialist",
+  "description": "Building intelligent solutions at the intersection of software engineering, data science, and artificial intelligence.",
+  "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+  "socialLinks": [
+    {
+      "platform": "Github",
+      "url": "https://github.com"
+    },
+    {
+      "platform": "Linkedin",
+      "url": "https://linkedin.com"
+    },
+    {
+      "platform": "Mail",
+      "url": "mailto:contact@example.com"
+    },
+    {
+      "platform": "FileText",
+      "url": "#"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get in Touch",
+      "url": "#contact",
+      "primary": true
+    },
+    {
+      "text": "View Projects",
+      "url": "#projects",
+      "primary": false
+    }
+  ]
+}

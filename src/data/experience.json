@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Lead AI Engineer",
+    "company": "TechInnovate AI",
+    "location": "San Francisco, CA",
+    "period": "Jan 2022 - Present",
+    "description": [
+      "Leading a team of 8 engineers in developing cutting-edge AI solutions for enterprise clients",
+      "Architected and implemented a real-time recommendation system that increased customer engagement by 35%",
+      "Designed and deployed MLOps infrastructure that reduced model deployment time by 70%",
+      "Collaborated with product teams to define AI strategy and roadmap for next-generation products"
+    ]
+  },
+  {
+    "title": "Senior Data Scientist",
+    "company": "DataVision Analytics",
+    "location": "Seattle, WA",
+    "period": "Mar 2019 - Dec 2021",
+    "description": [
+      "Developed predictive models for customer churn reduction, resulting in 25% improved retention",
+      "Built and optimized data pipelines processing over 5TB of data daily using Spark and Airflow",
+      "Created interactive dashboards for business stakeholders using Python and Tableau",
+      "Mentored junior data scientists and led knowledge-sharing sessions on advanced ML techniques"
+    ]
+  },
+  {
+    "title": "Software Engineer",
+    "company": "CloudScale Systems",
+    "location": "Austin, TX",
+    "period": "Jun 2016 - Feb 2019",
+    "description": [
+      "Designed and implemented microservices architecture for high-traffic e-commerce platform",
+      "Developed RESTful APIs and backend services using Node.js, Express, and MongoDB",
+      "Improved application performance by 40% through code optimization and caching strategies",
+      "Collaborated in an agile team environment with daily standups and bi-weekly sprints"
+    ]
+  },
+  {
+    "title": "Full Stack Developer",
+    "company": "WebFront Solutions",
+    "location": "Boston, MA",
+    "period": "Aug 2013 - May 2016",
+    "description": [
+      "Built responsive web applications using React, Redux, and Node.js",
+      "Implemented CI/CD pipelines using Jenkins, reducing deployment time by 60%",
+      "Developed and maintained database schemas and queries for PostgreSQL databases",
+      "Participated in code reviews and contributed to improving development standards"
+    ]
+  }
+]

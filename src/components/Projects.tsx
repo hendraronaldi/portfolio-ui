@@ -1,0 +1,86 @@
+import React from 'react';
+import { Github, ExternalLink } from 'lucide-react';
+import projectsData from '../data/projects.json';
+
+const Projects: React.FC = () => {
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  return (
+    <section id="projects" className="py-16 bg-gray-800">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projectsData.map((project, index) => (
+            <div key={index} className="bg-gray-900 rounded-lg overflow-hidden border border-gray-700 transition-transform hover:scale-[1.02]">
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                <p className="text-gray-400 mb-4">{project.description}</p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map((tech, techIndex) => (
+                    <span
+                      key={techIndex}
+                      className="px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex space-x-4">
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <Github size={18} className="mr-1" />
+                    <span>Code</span>
+                  </a>
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <ExternalLink size={18} className="mr-1" />
+                    <span>Live Demo</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <button
+            onClick={() => window.open("https://github.com", "_blank")}
+            className="inline-flex items-center px-6 py-3 bg-gray-700 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+          >
+            <Github size={20} className="mr-2" />
+            <span>View More on GitHub</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Projects;
