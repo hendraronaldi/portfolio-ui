@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Paperclip, Image } from 'lucide-react';
+import { MessageCircle, X, Send, Paperclip, Image, ThumbsUp, ThumbsDown } from 'lucide-react';
 import axios from 'axios';
 import initialMessages from '../data/chat-messages.json';
 
@@ -12,6 +12,7 @@ interface Message {
   timestamp: string;
   type: MessageType;
   fileName?: string;
+  previousUserMessage?: string;
 }
 
 interface APIResponse {
@@ -28,6 +29,7 @@ const ChatPopup: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [hasShownInitialMessages, setHasShownInitialMessages] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState<Record<number, boolean>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -36,25 +38,22 @@ const ChatPopup: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Handle initial bot messages with typing animation
   useEffect(() => {
     if (isOpen && !hasShownInitialMessages) {
       setHasShownInitialMessages(true);
       setIsTyping(true);
 
-      // Show first message after a delay
       setTimeout(() => {
         setMessages([initialMessages[0]]);
         
-        // Show second message with typing animation
         setTimeout(() => {
           setIsTyping(true);
           setTimeout(() => {
             setMessages(prev => [...prev, initialMessages[1]]);
             setIsTyping(false);
-          }, 500);
-        }, 250);
-      }, 500);
+          }, 1500);
+        }, 500);
+      }, 1000);
     }
   }, [isOpen, hasShownInitialMessages]);
 
@@ -131,6 +130,7 @@ const ChatPopup: React.FC = () => {
       }
       
       if (newMessage.trim()) {
+        const userMessage = newMessage.trim();
         const textMessage: Message = {
           id: nextId + (selectedFile ? 2 : 0),
           sender: 'user',
@@ -141,15 +141,14 @@ const ChatPopup: React.FC = () => {
         
         setMessages(prev => [...prev, textMessage]);
         const response = await sendMessageToAPI(newMessage);
-
-        console.log('response:', response)
         
         const botMessage: Message = {
           id: nextId + (selectedFile ? 3 : 1),
           sender: 'bot',
           content: response.message,
           timestamp: formatTimestamp(),
-          type: 'text'
+          type: 'text',
+          previousUserMessage: userMessage
         };
         
         setMessages(prev => [...prev, botMessage]);
@@ -157,6 +156,25 @@ const ChatPopup: React.FC = () => {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    }
+  };
+
+  const handleFeedback = async (messageId: number, isPositive: boolean) => {
+    if (feedbackSubmitted[messageId]) return;
+
+    const message = messages.find(m => m.id === messageId);
+    if (!message || !message.previousUserMessage) return;
+
+    try {
+      await axios.post('http://localhost:8000/feedback', {
+        userMessage: message.previousUserMessage,
+        botResponse: message.content,
+        isPositive
+      });
+
+      setFeedbackSubmitted(prev => ({ ...prev, [messageId]: true }));
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
     }
   };
 
@@ -256,10 +274,35 @@ const ChatPopup: React.FC = () => {
                   </div>
                 )}
                 
-                <div className="text-right mt-1">
+                <div className="flex items-center justify-between mt-1">
                   <span className="text-xs opacity-70">
                     {formatMessageTime(message.timestamp)}
                   </span>
+                  
+                  {message.sender === 'bot' && (
+                    <div className="flex space-x-2 ml-4">
+                      {!feedbackSubmitted[message.id] ? (
+                        <>
+                          <button
+                            onClick={() => handleFeedback(message.id, true)}
+                            className="p-1 hover:border hover:border-green-500 rounded transition-all"
+                            title="Helpful"
+                          >
+                            <ThumbsUp size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleFeedback(message.id, false)}
+                            className="p-1 hover:border hover:border-red-500 rounded transition-all"
+                            title="Not helpful"
+                          >
+                            <ThumbsDown size={14} />
+                          </button>
+                        </>
+                      ) : (
+                        <span className="text-xs text-gray-400">Thanks for your feedback!</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
