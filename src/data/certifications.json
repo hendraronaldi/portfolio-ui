@@ -1,22 +1,35 @@
 [
   {
-    "name": "AWS Certified Solutions Architect",
-    "issuer": "Amazon Web Services",
-    "year": "2021"
+    "name": "Computer Vision Batch 3",
+    "issuer": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "year": "2024",
+    "url": "https://aiforindonesia.com/certificate/AICB2402230024"
   },
   {
     "name": "TensorFlow Developer Certificate",
-    "issuer": "Google",
-    "year": "2020"
+    "issuer": "TensorFlow Certificate Program",
+    "year": "2023",
+    "url": "https://www.credential.net/589f980f-b231-44f4-8d6b-69c57a83123d"
   },
   {
-    "name": "Certified Kubernetes Administrator",
-    "issuer": "Cloud Native Computing Foundation",
-    "year": "2019"
+    "name": "Cognizant Artificial Intelligence Virtual Experience Program",
+    "issuer": "Forage",
+    "year": "2023",
+    "url": "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Cognizant/5N2ygyhzMWjKQmgCK_Cognizant_uEJPr8Rpqu7F7rYvB_1690620646582_completion_certificate.pdf"
   },
   {
-    "name": "Microsoft Certified: Azure Data Scientist",
-    "issuer": "Microsoft",
+    "name": "Data Science Bootcamp Batch 9",
+    "issuer": "Shiftacademy",
+    "year": "2021"
+  },
+  {
+    "name": "Certificate of Completion",
+    "issuer": "DQLab",
+    "year": "2021"
+  },
+  {
+    "name": "3D Conquest Data Science Track Participant Certificate",
+    "issuer": "CIMB Niaga",
     "year": "2018"
   }
 ]

@@ -1,20 +1,20 @@
 {
-  "name": "Alex Chen",
-  "title": "Software Engineer | Data Scientist | AI Specialist",
-  "description": "Building intelligent solutions at the intersection of software engineering, data science, and artificial intelligence.",
-  "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+  "name": "Hendra Ronaldi",
+  "title": "Software Engineer | AI Engineer | Data Scientist",
+  "description": "Building intelligent solutions at the intersection of software engineering, data engineering, and artificial intelligence.",
+  "image": "./src/assets/img/hero.png",
   "socialLinks": [
     {
       "platform": "Github",
-      "url": "https://github.com"
+      "url": "https://github.com/hendraronaldi"
     },
     {
       "platform": "Linkedin",
-      "url": "https://linkedin.com"
+      "url": "https://linkedin.com/in/hendra-ronaldi-4a7a1b121"
     },
     {
       "platform": "Mail",
-      "url": "mailto:contact@example.com"
+      "url": "mailto:hendraronaldi10@gmail.com"
     },
     {
       "platform": "FileText",

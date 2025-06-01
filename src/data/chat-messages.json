@@ -2,15 +2,15 @@
   {
     "id": 1,
     "sender": "bot",
-    "content": "Hi there! 👋 I'm Alex's virtual assistant. How can I help you today?",
-    "timestamp": "2023-09-15T10:30:00Z",
+    "content": "Hi there! 👋 I'm Hendra's virtual assistant. How can I help you today?",
+    "timestamp": "2024-03-09T10:30:00Z",
     "type": "text"
   },
   {
     "id": 2,
     "sender": "bot",
-    "content": "You can ask me about Alex's experience, projects, or availability for new opportunities!",
-    "timestamp": "2023-09-15T10:30:05Z",
+    "content": "You can ask me about Hendra's experience in software engineering, data engineering, AI development, or his availability for new opportunities!",
+    "timestamp": "2024-03-09T10:30:05Z",
     "type": "text"
   }
 ]

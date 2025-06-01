@@ -1,15 +1,15 @@
 {
   "intro": [
-    "I'm a passionate technologist with over 10 years of experience building innovative solutions across software engineering, data science, and artificial intelligence. My journey began with traditional software development, evolved through big data analytics, and now focuses on cutting-edge AI applications.",
-    "With a background in Computer Science and Machine Learning, I combine technical expertise with a deep understanding of business needs to deliver impactful solutions. I thrive in collaborative environments and enjoy tackling complex problems that require interdisciplinary approaches.",
-    "When I'm not coding or training models, you'll find me contributing to open-source projects, mentoring aspiring developers, or exploring the latest advancements in technology."
+    "I'm a passionate technologist with experience in software engineering, artificial intelligence, and data science. My journey began with software development, evolved through data analytics, and now focuses on AI applications.",
+    "Highly interested in information technology and artificial intelligence. A dedicated, hard worker, and responsible person who enjoys working as a team. Always seeking to gain more knowledge and experience to get new skills.",
+    "When I'm not coding or working on AI projects, I actively contribute to team projects, share knowledge with colleagues, and explore the latest advancements in technology."
   ],
   "expertise": [
     {
       "title": "Software Engineering",
       "icon": "Code",
       "color": "purple",
-      "description": "Building scalable, maintainable applications with modern frameworks and best practices."
+      "description": "Building scalable microservices applications with modern frameworks and best practices."
     },
     {
       "title": "Data Science",
@@ -18,16 +18,16 @@
       "description": "Extracting insights from complex datasets to drive data-informed decisions."
     },
     {
-      "title": "AI Development",
+      "title": "AI Engineering",
       "icon": "Brain",
       "color": "green",
-      "description": "Creating intelligent systems using machine learning and deep learning techniques."
+      "description": "Creating intelligent systems using machine learning and deep learning techniques with TensorFlow."
     },
     {
-      "title": "Problem Solving",
-      "icon": "Lightbulb",
-      "color": "yellow",
-      "description": "Approaching complex challenges with analytical thinking and creative solutions."
+      "title": "Team Leadership",
+      "icon": "Users",
+      "color": "orange",
+      "description": "Leading remote small teams in enhancing backend development with agile methodology."
     }
   ]
 }
