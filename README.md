@@ -2,6 +2,8 @@
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS, showcasing my experience in software engineering, data science, and artificial intelligence.
 
+This repository was created using [bolt.new](https://bolt.new)
+
 ## Features
 
 - 🎨 Modern UI/UX with smooth animations
