@@ -70,12 +70,6 @@ const ChatPopup: React.FC = () => {
   const sendMessageToAPI = async (content: string, type: MessageType = 'text', file?: File): Promise<APIResponse> => {
     try {
       setIsTyping(true);
-      // const formData = new FormData();
-      // formData.append('message', content);
-      // formData.append('type', type);
-      // if (file) {
-      //   formData.append('file', file);
-      // }
 
       const payload = {"query": content}
 
@@ -279,20 +273,20 @@ const ChatPopup: React.FC = () => {
                     {formatMessageTime(message.timestamp)}
                   </span>
                   
-                  {message.sender === 'bot' && (
+                  {message.sender === 'bot' && !message.content.includes("Hi there!") && !message.content.includes("You can ask me") && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>
                           <button
                             onClick={() => handleFeedback(message.id, true)}
-                            className="p-1 hover:border hover:border-green-500 rounded transition-all"
+                            className="p-1 hover:text-green-500 hover:border hover:border-green-500 rounded transition-all"
                             title="Helpful"
                           >
                             <ThumbsUp size={14} />
                           </button>
                           <button
                             onClick={() => handleFeedback(message.id, false)}
-                            className="p-1 hover:border hover:border-red-500 rounded transition-all"
+                            className="p-1 hover:text-red-500 hover:border hover:border-red-500 rounded transition-all"
                             title="Not helpful"
                           >
                             <ThumbsDown size={14} />
@@ -370,7 +364,7 @@ const ChatPopup: React.FC = () => {
               rows={1}
             />
             <div className="flex space-x-2 ml-2">
-              <button 
+              {/* <button 
                 onClick={triggerFileInput}
                 className="text-gray-400 hover:text-white transition-colors"
               >
@@ -381,7 +375,7 @@ const ChatPopup: React.FC = () => {
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Image size={18} />
-              </button>
+              </button> */}
               <button 
                 onClick={handleSendMessage}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-full"

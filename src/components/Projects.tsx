@@ -1,16 +1,12 @@
-import React from 'react';
-import { Github, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { Github, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import projectsData from '../data/projects.json';
 
 const Projects: React.FC = () => {
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
+
+  const toggleProject = (index: number) => {
+    setExpandedProject(expandedProject === index ? null : index);
   };
 
   return (
@@ -44,6 +40,35 @@ const Projects: React.FC = () => {
                     </span>
                   ))}
                 </div>
+
+                <button
+                  onClick={() => toggleProject(index)}
+                  className="flex items-center text-gray-300 hover:text-white transition-colors mb-4"
+                >
+                  {expandedProject === index ? (
+                    <>
+                      <ChevronUp size={18} className="mr-1" />
+                      <span>Show Less</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown size={18} className="mr-1" />
+                      <span>Show More</span>
+                    </>
+                  )}
+                </button>
+
+                {expandedProject === index && (
+                  <div className="mt-4 p-4 bg-gray-800 rounded-lg animate-fadeIn">
+                    <h4 className="font-semibold mb-2">Technical Details:</h4>
+                    <ul className="list-disc list-inside space-y-2 text-gray-300">
+                      {project.technicalDetails.map((detail, detailIndex) => (
+                        <li key={detailIndex}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <div className="flex space-x-4">
                   <a
                     href={project.github}

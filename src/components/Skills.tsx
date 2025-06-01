@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import skillsData from '../data/skills.json';
 
 const Skills: React.FC = () => {
+  const [expandedSkills, setExpandedSkills] = useState<Record<string, boolean>>({});
+
+  const toggleSkill = (categoryIndex: number, skillIndex: number) => {
+    const key = `${categoryIndex}-${skillIndex}`;
+    setExpandedSkills(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   return (
     <section id="skills" className="py-16">
       <div className="container mx-auto px-4">
@@ -11,25 +22,33 @@ const Skills: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {skillsData.map((category, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          {skillsData.categories.map((category, categoryIndex) => (
+            <div key={categoryIndex} className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h3 className="text-xl font-semibold mb-6 text-center">{category.title}</h3>
-              <div className="space-y-6">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex}>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-gray-300">{skill.name}</span>
-                      <span className="text-gray-400">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2.5">
-                      <div
-                        className="h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ul className="space-y-4">
+                {category.skills.map((skill, skillIndex) => {
+                  const key = `${categoryIndex}-${skillIndex}`;
+                  const isExpanded = expandedSkills[key];
+
+                  return (
+                    <li key={skillIndex} className="text-gray-300">
+                      <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleSkill(categoryIndex, skillIndex)}>
+                        <span className="font-medium">{skill.name}</span>
+                        {isExpanded ? (
+                          <ChevronUp size={16} className="text-gray-400" />
+                        ) : (
+                          <ChevronDown size={16} className="text-gray-400" />
+                        )}
+                      </div>
+                      {isExpanded && (
+                        <p className="mt-2 text-sm text-gray-400 pl-4 border-l-2 border-gray-700 animate-fadeIn">
+                          {skill.explanation}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           ))}
         </div>

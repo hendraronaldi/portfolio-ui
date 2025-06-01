@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink } from 'lucide-react';
 import experienceData from '../data/experience.json';
 import educationData from '../data/education.json';
 import certificationsData from '../data/certifications.json';
@@ -72,8 +72,20 @@ const Experience: React.FC = () => {
             <ul className="space-y-4">
               {certificationsData.map((cert, index) => (
                 <li key={index} className="bg-gray-800 p-4 rounded-lg">
-                  <h4 className="font-semibold">{cert.name}</h4>
-                  <p className="text-gray-400 text-sm">{cert.issuer}, {cert.year}</p>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold">{cert.name}</h4>
+                      <p className="text-gray-400 text-sm">{cert.issuer}, {cert.year}</p>
+                    </div>
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      <ExternalLink size={16} />
+                    </a>
+                  </div>
                 </li>
               ))}
             </ul>
