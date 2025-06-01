@@ -246,7 +246,9 @@ const ChatPopup: React.FC = () => {
                     : 'bg-gray-800 text-white'
                 }`}
               >
-                {message.type === 'text' && <p>{message.content}</p>}
+                {message.type === 'text' && (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                )}
                 
                 {message.type === 'image' && (
                   <div className="mb-2">
@@ -273,7 +275,7 @@ const ChatPopup: React.FC = () => {
                     {formatMessageTime(message.timestamp)}
                   </span>
                   
-                  {message.sender === 'bot' && !message.content.includes("Hi there!") && !message.content.includes("You can ask me") && (
+                  {message.sender === 'bot' && !message.content.includes("Hi there!") && !message.content.includes("I can help you with") && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>
@@ -364,18 +366,6 @@ const ChatPopup: React.FC = () => {
               rows={1}
             />
             <div className="flex space-x-2 ml-2">
-              {/* <button 
-                onClick={triggerFileInput}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Paperclip size={18} />
-              </button>
-              <button 
-                onClick={triggerFileInput}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Image size={18} />
-              </button> */}
               <button 
                 onClick={handleSendMessage}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-full"
