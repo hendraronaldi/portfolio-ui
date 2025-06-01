@@ -9,7 +9,7 @@
   {
     "id": 2,
     "sender": "bot",
-    "content": "I can help you with:\n\n• 💻 Software Engineering experience\n• 🔧 Data Engineering projects\n• 🤖 AI Development work\n• 📊 Technical skills and expertise\n• 📅 Project history and achievements\n• 💼 Professional background\n• 📫 Contact information\n\nWhat would you like to know more about?",
+    "content": "I can help you with:\n\n💻 Software Engineering\n   • Full-stack development\n   • Microservices architecture\n   • System optimization\n\n🔧 Data Engineering\n   • Pipeline development\n   • Data warehouse design\n   • ETL processes\n\n🤖 AI Development\n   • Machine learning models\n   • Computer vision systems\n   • NLP applications\n\n📊 Technical Expertise\n   • Programming languages\n   • Frameworks & tools\n   • Cloud platforms\n\nWhat would you like to know more about?",
     "timestamp": "2024-03-09T10:30:05Z",
     "type": "text"
   }
