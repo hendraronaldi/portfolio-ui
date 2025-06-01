@@ -22,15 +22,10 @@ const Header: React.FC = () => {
   return (
     <header className="fixed w-full bg-gray-900 bg-opacity-90 backdrop-blur-sm z-50 py-4 border-b border-gray-800">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <div className="flex space-x-1">
-            <Code size={24} className="text-purple-500" />
-            <Database size={24} className="text-blue-500" />
-            <Brain size={24} className="text-green-500" />
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-500 via-blue-500 to-green-500 bg-clip-text text-transparent">
-            DevDataAI
-          </span>
+        <div className="flex items-center space-x-1">
+          <Code size={24} className="text-purple-500" />
+          <Database size={24} className="text-blue-500" />
+          <Brain size={24} className="text-green-500" />
         </div>
 
         {/* Desktop Navigation */}
