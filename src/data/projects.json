@@ -1,98 +1,106 @@
-[
-  {
-    "title": "AI Agent Chatbot",
-    "description": "Implemented a RAG (Retrieval-Augmented Generation) AI agent chatbot for FAQ policy data, enabling more intelligent and context-aware responses for user inquiries.",
-    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    "technologies": ["Python", "LLM", "RAG", "NLP", "Vector Database"],
-    "technicalDetails": [
-      "Implemented RAG architecture for enhanced chatbot responses",
-      "Utilized LLMs for natural language understanding and generation",
-      "Integrated vector database for efficient retrieval of relevant information",
-      "Optimized response generation for accuracy and relevance",
-      "Conducted user testing to refine chatbot interactions"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Jan 2025 - Present"
-  },
-  {
-    "title": "Reporting & Analytics Data Pipeline",
-    "description": "Designed and implemented star schema data warehouse, developed and maintained data pipelines for reporting and analytics, and optimized SQL queries for improved performance.",
-    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    "technologies": ["Google BigQuery", "Google Dataflow", "SQL", "Data Modeling", "ETL"],
-    "technicalDetails": [
-      "Designed star schema for data warehouse",
-      "Developed ETL pipelines using Google Dataflow",
-      "Optimized SQL queries for performance improvements",
-      "Integrated data from multiple sources into BigQuery",
-      "Ensured data quality and consistency across pipelines"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Jan 2024 - Present"
-  },
-  {
-    "title": "Text Matching System",
-    "description": "Designed and developed a text matching system that maps input text to master data for specific context cases using a dictionary-based approach with text similarity algorithms.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    "technologies": ["Python", "NLP", "Text Similarity", "Dictionary-based Approach"],
-    "technicalDetails": [
-      "Developed a dictionary-based text matching algorithm",
-      "Implemented text similarity algorithms for accurate mapping",
-      "Optimized performance for large datasets",
-      "Integrated with existing systems for seamless data flow",
-      "Conducted extensive testing to ensure accuracy and reliability"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Jan 2024 - Present"
-  },
-  {
-    "title": "Coral Life Forms Detection",
-    "description": "Bootcamp Indonesia AI Computer Vision final group project for coral object detection. Worked in a 10-member team to train and fine-tune YOLO variant models using provided datasets to achieve optimal metrics.",
-    "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
-    "technologies": ["Python", "TensorFlow", "YOLO", "Computer Vision", "Object Detection"],
-    "technicalDetails": [
-      "Trained YOLO variant models on coral datasets",
-      "Fine-tuned model parameters for optimal performance",
-      "Collaborated with a team of 10 members",
-      "Achieved high accuracy and precision metrics",
-      "Presented findings and model performance in a final report"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Dec 2023 - Feb 2024"
-  },
-  {
-    "title": "Item Domain System Improvement",
-    "description": "Led a small backend development team working in a cross-division team to design and develop a new improved item domain system, decreasing database complexity from more than 10 relations to only 4 relations.",
-    "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
-    "technologies": ["Go", "MySQL", "MongoDB", "Microservices", "gRPC"],
-    "technicalDetails": [
-      "Designed a new item domain system architecture",
-      "Reduced database complexity by simplifying relations",
-      "Implemented gRPC for efficient inter-service communication",
-      "Optimized MySQL queries for better performance",
-      "Led team in Agile development practices"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Nov 2021 - Present"
-  },
-  {
-    "title": "Import Data Integration System",
-    "description": "Developed a microservices system to import data from third-party APIs to database through various types of systems such as trigger, scheduler, and webhook.",
-    "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
-    "technologies": ["Go", "Microservices", "API Integration", "Scheduler", "Webhook"],
-    "technicalDetails": [
-      "Designed a microservices architecture for data import",
-      "Implemented various data import methods including triggers, schedulers, and webhooks",
-      "Ensured data integrity and consistency during import processes",
-      "Optimized API calls for performance and reliability",
-      "Integrated with third-party APIs for seamless data flow"
-    ],
-    "github": "https://github.com",
-    "live": "https://example.com",
-    "period": "Feb 2021 - Feb 2022"
-  }
-]
+{
+  "projects": [
+    {
+      "title": "AI Agent Chatbot",
+      "description": "Implemented a RAG (Retrieval-Augmented Generation) AI agent chatbot for FAQ policy data, enabling more intelligent and context-aware responses for user inquiries.",
+      "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "technologies": ["Python", "LLM", "RAG", "NLP", "Vector Database"],
+      "technicalDetails": [
+        "Implemented RAG architecture for enhanced chatbot responses",
+        "Utilized LLMs for natural language understanding and generation",
+        "Integrated vector database for efficient retrieval of relevant information",
+        "Optimized response generation for accuracy and relevance",
+        "Conducted user testing to refine chatbot interactions"
+      ],
+      "companyName": "PT Forstok Teknologi Indonesia",
+      "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      "period": "Jan 2024 - Present",
+      "type": "work"
+    },
+    {
+      "title": "Reporting & Analytics Data Pipeline",
+      "description": "Designed and implemented star schema data warehouse, developed and maintained data pipelines for reporting and analytics, and optimized SQL queries for improved performance.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "technologies": ["Google BigQuery", "Google Dataflow", "SQL", "Data Modeling", "ETL"],
+      "technicalDetails": [
+        "Designed star schema for data warehouse",
+        "Developed ETL pipelines using Google Dataflow",
+        "Optimized SQL queries for performance improvements",
+        "Integrated data from multiple sources into BigQuery",
+        "Ensured data quality and consistency across pipelines"
+      ],
+      "companyName": "PT Forstok Teknologi Indonesia",
+      "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      "period": "Jan 2024 - Present",
+      "type": "work"
+    },
+    {
+      "title": "Text Matching System",
+      "description": "Designed and developed a text matching system that maps input text to master data for specific context cases using a dictionary-based approach with text similarity algorithms.",
+      "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "technologies": ["Python", "NLP", "Text Similarity", "Dictionary-based Approach"],
+      "technicalDetails": [
+        "Developed a dictionary-based text matching algorithm",
+        "Implemented text similarity algorithms for accurate mapping",
+        "Optimized performance for large datasets",
+        "Integrated with existing systems for seamless data flow",
+        "Conducted extensive testing to ensure accuracy and reliability"
+      ],
+      "companyName": "PT Forstok Teknologi Indonesia",
+      "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      "period": "Jan 2024 - Present",
+      "type": "work"
+    },
+    {
+      "title": "Coral Life Forms Detection",
+      "description": "Bootcamp Indonesia AI Computer Vision final group project for coral object detection. Worked in a 10-member team to train and fine-tune YOLO variant models using provided datasets to achieve optimal metrics.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
+      "technologies": ["Python", "TensorFlow", "YOLO", "Computer Vision", "Object Detection"],
+      "technicalDetails": [
+        "Trained YOLO variant models on coral datasets",
+        "Fine-tuned model parameters for optimal performance",
+        "Collaborated with a team of 10 members",
+        "Achieved high accuracy and precision metrics",
+        "Presented findings and model performance in a final report"
+      ],
+      "github": "https://github.com/hendraronaldi/coral-detection",
+      "live": "https://coral-detection.vercel.app",
+      "period": "Dec 2023 - Feb 2024",
+      "type": "personal"
+    },
+    {
+      "title": "Item Domain System Improvement",
+      "description": "Led a small backend development team working in a cross-division team to design and develop a new improved item domain system, decreasing database complexity from more than 10 relations to only 4 relations.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
+      "technologies": ["Go", "MySQL", "MongoDB", "Microservices", "gRPC"],
+      "technicalDetails": [
+        "Designed a new item domain system architecture",
+        "Reduced database complexity by simplifying relations",
+        "Implemented gRPC for efficient inter-service communication",
+        "Optimized MySQL queries for better performance",
+        "Led team in Agile development practices"
+      ],
+      "companyName": "PT Forstok Teknologi Indonesia",
+      "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      "period": "Nov 2021 - Present",
+      "type": "work"
+    },
+    {
+      "title": "Import Data Integration System",
+      "description": "Developed a microservices system to import data from third-party APIs to database through various types of systems such as trigger, scheduler, and webhook.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1534&q=80",
+      "technologies": ["Go", "Microservices", "API Integration", "Scheduler", "Webhook"],
+      "technicalDetails": [
+        "Designed a microservices architecture for data import",
+        "Implemented various data import methods including triggers, schedulers, and webhooks",
+        "Ensured data integrity and consistency during import processes",
+        "Optimized API calls for performance and reliability",
+        "Integrated with third-party APIs for seamless data flow"
+      ],
+      "companyName": "PT Forstok Teknologi Indonesia",
+      "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      "period": "Feb 2021 - Feb 2022",
+      "type": "work"
+    }
+  ]
+}
