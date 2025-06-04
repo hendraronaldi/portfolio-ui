@@ -9,6 +9,21 @@ const Projects: React.FC = () => {
     setExpandedProject(expandedProject === index ? null : index);
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'In Progress':
+        return 'bg-blue-500';
+      case 'Done':
+        return 'bg-green-500';
+      case 'On Hold':
+        return 'bg-yellow-500';
+      case 'Delegated':
+        return 'bg-green-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
   return (
     <section id="projects" className="py-16 bg-gray-800">
       <div className="container mx-auto px-4">
@@ -29,7 +44,12 @@ const Projects: React.FC = () => {
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold">{project.title}</h3>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="text-xl font-semibold">{project.title}</h3>
+                    <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(project.status)} text-white`}>
+                      {project.status}
+                    </span>
+                  </div>
                   {project.type === 'work' && (
                     <div className="flex items-center text-gray-400">
                       <Briefcase size={16} className="mr-1" />
