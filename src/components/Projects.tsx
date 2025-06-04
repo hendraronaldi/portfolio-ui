@@ -28,12 +28,12 @@ const Projects: React.FC = () => {
     <section id="projects" className="py-16 bg-gray-800">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Projects</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projectsData.projects.map((project, index) => (
+          {projectsData.map((project, index) => (
             <div key={index} className="bg-gray-900 rounded-lg overflow-hidden border border-gray-700 transition-transform hover:scale-[1.02]">
               <div className="h-48 overflow-hidden">
                 <img
@@ -99,8 +99,18 @@ const Projects: React.FC = () => {
 
                 <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
                   <div className="flex space-x-4">
-                    {project.type === 'personal' ? (
+                    {project.type === 'personal' || project.type === 'bootcamp' ? (
                       <>
+                        {project.type === 'bootcamp' ?
+                          <div className="flex items-center">
+                            <img
+                              src={project.companyLogo}
+                              alt={project.companyName}
+                              className="w-6 h-6 rounded-full mr-2"
+                            />
+                            <span className="text-sm text-gray-400">{project.companyName}</span>
+                          </div>
+                        : <></>}
                         {project.github && (
                           <a
                             href={project.github}

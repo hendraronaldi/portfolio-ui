@@ -77,14 +77,14 @@ const Experience: React.FC = () => {
                       <h4 className="font-semibold">{cert.name}</h4>
                       <p className="text-gray-400 text-sm">{cert.issuer}, {cert.year}</p>
                     </div>
-                    <a
+                    {cert.url? <a
                       href={cert.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-400 hover:text-blue-300 transition-colors"
                     >
                       <ExternalLink size={16} />
-                    </a>
+                    </a> : <></>}
                   </div>
                 </li>
               ))}
