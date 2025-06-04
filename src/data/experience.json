@@ -1,15 +1,14 @@
 [
   {
-    "title": "Data & AI Engineer",
+    "title": "AI & Data Engineer",
     "company": "PT Forstok Teknologi Indonesia",
     "location": "Indonesia",
     "period": "Jan 2024 - Present",
     "description": [
+      "Design and develop text matching input to master data using dictionary-based approach text similarity",
       "Design, develop, and maintain data pipeline to fulfill feature requirements such as reporting, analytics, and AI applications",
-      "Design star schema data warehouse and develop data pipelines for reporting and analytics",
       "Optimize existing queries for improved system performance",
-      "Implement RAG AI agent chatbot for FAQ policy data",
-      "Design and develop text matching input to master data using dictionary-based approach text similarity"
+      "Implement RAG AI agent chatbot for FAQ policy data"
     ]
   },
   {
@@ -38,7 +37,7 @@
     ]
   },
   {
-    "title": "Bot Developer",
+    "title": "Backend Developer (Chatbot)",
     "company": "talkabot.id",
     "location": "Bandung Area, West Java, Indonesia",
     "period": "Jan 2018 - Dec 2018",
