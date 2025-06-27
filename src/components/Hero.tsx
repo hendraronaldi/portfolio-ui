@@ -1,6 +1,7 @@
 import React from 'react';
 import { Github, Linkedin, Twitter, Mail, FileText } from 'lucide-react';
 import heroData from '../data/hero.json';
+import heroImage from '../assets/img/hero.png';
 
 const Hero: React.FC = () => {
   // Map string icon names to actual components
@@ -68,7 +69,7 @@ const Hero: React.FC = () => {
             <div className="relative">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-gray-800 mx-auto">
                 <img
-                  src={heroData.image}
+                  src={heroImage}
                   alt={heroData.name}
                   className="w-full h-full object-cover"
                 />
