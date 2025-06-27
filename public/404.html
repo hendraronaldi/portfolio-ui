@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Hendra Ronaldi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center">
+    <div class="container mx-auto px-4 text-center">
+        <div class="fade-in">
+            <!-- 404 Number with floating animation -->
+            <div class="float-animation mb-8">
+                <h1 class="text-9xl md:text-[12rem] font-bold gradient-text mb-4">404</h1>
+            </div>
+            
+            <!-- Error Message -->
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Page Not Found</h2>
+                <p class="text-lg text-gray-400 mb-6 max-w-md mx-auto">
+                    Oops! The page you're looking for seems to have wandered off into the digital void.
+                </p>
+            </div>
+            
+            <!-- Decorative Elements -->
+            <div class="mb-8 flex justify-center space-x-4">
+                <div class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+                <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+            </div>
+            
+            <!-- Navigation Options -->
+            <div class="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+                <a href="/" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Go Home
+                </a>
+                
+                <button onclick="history.back()" class="inline-flex items-center px-6 py-3 bg-gray-800 border border-gray-700 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Go Back
+                </button>
+            </div>
+            
+            <!-- Additional Help -->
+            <div class="mt-12 p-6 bg-gray-800 rounded-lg border border-gray-700 max-w-md mx-auto">
+                <h3 class="text-xl font-semibold mb-3">Looking for something specific?</h3>
+                <div class="space-y-2 text-sm">
+                    <a href="/#about" class="block text-gray-300 hover:text-white transition-colors">About Me</a>
+                    <a href="/#projects" class="block text-gray-300 hover:text-white transition-colors">My Projects</a>
+                    <a href="/#experience" class="block text-gray-300 hover:text-white transition-colors">Experience</a>
+                    <a href="/#contact" class="block text-gray-300 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="mt-12 text-gray-500 text-sm">
+                <p>© 2024 Hendra Ronaldi. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to the 404 number
+            const title = document.querySelector('.gradient-text');
+            title.addEventListener('click', function() {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+            
+            // Add hover effect to decorative dots
+            const dots = document.querySelectorAll('.animate-pulse');
+            dots.forEach(dot => {
+                dot.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.5)';
+                });
+                dot.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
