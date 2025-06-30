@@ -3,6 +3,10 @@ import { MessageCircle, X, Send, Paperclip, Image, ThumbsUp, ThumbsDown } from '
 import axios from 'axios';
 import initialMessages from '../data/chat-messages.json';
 
+// Access the environment variables
+const backendProxyUrl = import.meta.env.VITE_BE_PROXY_URL;
+const apiKey = import.meta.env.VITE_FE_API_KEY;
+
 type MessageType = 'text' | 'image' | 'file';
 
 interface Message {
@@ -73,11 +77,16 @@ const ChatPopup: React.FC = () => {
 
       const payload = {"query": content}
 
-      const response = await axios.post<APIResponse>('http://localhost:8000/query-resume', payload, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post<APIResponse>(
+        backendProxyUrl + '/api/agent/resume', 
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': apiKey
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -160,10 +169,15 @@ const ChatPopup: React.FC = () => {
     if (!message || !message.previousUserMessage) return;
 
     try {
-      await axios.post('http://localhost:8000/feedback', {
+      await axios.post(backendProxyUrl + '/api/agent/feedback', {
         userMessage: message.previousUserMessage,
         botResponse: message.content,
         isPositive
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
+        },
       });
 
       setFeedbackSubmitted(prev => ({ ...prev, [messageId]: true }));
