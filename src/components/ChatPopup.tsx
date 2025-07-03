@@ -289,7 +289,8 @@ const ChatPopup: React.FC = () => {
                     {formatMessageTime(message.timestamp)}
                   </span>
                   
-                  {message.sender === 'bot' && !message.content.includes("Hi there!") && !message.content.includes("I can help you with") && (
+                  {message.sender === 'bot' && !message.content.includes("Hi there!") && 
+                  !message.content.includes("I can help you with") && !message.content.includes("How can I help you today?") && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>

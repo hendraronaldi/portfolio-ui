@@ -2,14 +2,14 @@
   {
     "id": 1,
     "sender": "bot",
-    "content": "Hi there! 👋 I'm Hendra's virtual assistant. How can I help you today?",
+    "content": "Hi there! 👋 I'm Hendra's virtual assistant, here to provide information about my creator Hendra's projects, skills, and experience.",
     "timestamp": "2024-03-09T10:30:00Z",
     "type": "text"
   },
   {
     "id": 2,
     "sender": "bot",
-    "content": "I can help you with:\n\n💻 Software Engineering\n   • Full-stack development\n   • Microservices architecture\n   • System optimization\n\n🔧 Data Engineering\n   • Pipeline development\n   • Data warehouse design\n   • ETL processes\n\n🤖 AI Development\n   • Machine learning models\n   • Computer vision systems\n   • NLP applications\n\n📊 Technical Expertise\n   • Programming languages\n   • Frameworks & tools\n   • Cloud platforms\n\nWhat would you like to know more about?",
+    "content": "How can I help you today?",
     "timestamp": "2024-03-09T10:30:05Z",
     "type": "text"
   }
