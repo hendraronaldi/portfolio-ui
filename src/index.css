@@ -143,3 +143,165 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #6b7280;
 }
+
+/* Dynamic Skills Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(5px); }
+}
+
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+  50% { filter: drop-shadow(0 0 15px currentColor); }
+}
+
+/* Project Transition Animations */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Skill Item Animations */
+.skill-item {
+  animation-fill-mode: both;
+}
+
+.skill-item.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.skill-item.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.skill-item.animate-scaleIn {
+  animation: scaleIn 0.6s ease-out;
+}
+
+.skill-item.animate-bounceIn {
+  animation: bounceIn 0.8s ease-out;
+}
+
+.skill-item.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease-out;
+}
+
+/* Hover Effects */
+.skill-item:hover .skill-icon {
+  animation: float 2s ease-in-out infinite;
+}
+
+.skill-item:hover .skill-icon.glow {
+  animation: float 2s ease-in-out infinite, glow 2s ease-in-out infinite;
+}
+
+/* Responsive Grid Utilities */
+@media (max-width: 768px) {
+  .dynamic-grid {
+    grid-template-columns: repeat(var(--mobile-columns, 1), 1fr);
+    gap: var(--mobile-spacing, 1rem);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dynamic-grid {
+    grid-template-columns: repeat(var(--tablet-columns, 2), 1fr);
+    gap: var(--tablet-spacing, 1.5rem);
+  }
+}
+
+@media (min-width: 1025px) {
+  .dynamic-grid {
+    grid-template-columns: repeat(var(--desktop-columns, 3), 1fr);
+    gap: var(--desktop-spacing, 2rem);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .skill-item,
+  .project-slide,
+  .animation-element {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .skill-item:hover .skill-icon {
+    animation: none;
+  }
+}
+
+/* Focus States for Accessibility */
+.skill-item:focus,
+.project-nav-button:focus,
+.slide-indicator:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Loading States */
+.skill-loading {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

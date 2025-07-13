@@ -1,0 +1,460 @@
+{
+  "skillsSection": {
+    "layout": {
+      "type": "grid",
+      "columns": {
+        "mobile": 1,
+        "tablet": 2,
+        "desktop": 3
+      },
+      "gap": "2rem",
+      "padding": "4rem 1rem",
+      "maxWidth": "1200px",
+      "margin": "0 auto"
+    },
+    "background": {
+      "type": "gradient",
+      "direction": "to-br",
+      "colors": ["#1f2937", "#111827", "#0f172a"],
+      "overlay": {
+        "pattern": "grid",
+        "opacity": 0.1,
+        "color": "#3b82f6"
+      }
+    },
+    "animations": {
+      "stagger": {
+        "enabled": true,
+        "delay": 150,
+        "duration": 600,
+        "easing": "ease-out"
+      },
+      "scroll": {
+        "enabled": true,
+        "threshold": 0.1,
+        "rootMargin": "50px"
+      }
+    }
+  },
+  "skillCategories": [
+    {
+      "id": "backend",
+      "title": "Backend Architecture",
+      "icon": "🏗️",
+      "color": {
+        "primary": "#8b5cf6",
+        "secondary": "#3b82f6",
+        "accent": "#06b6d4"
+      },
+      "layout": {
+        "type": "architecture",
+        "centerElement": {
+          "type": "cloud",
+          "label": "AWS Cloud",
+          "icon": "☁️",
+          "size": "large",
+          "position": "center",
+          "animations": ["pulse", "glow"]
+        },
+        "satellites": [
+          {
+            "label": "GraphQL",
+            "icon": "🔗",
+            "position": "top-left",
+            "color": "#e91e63",
+            "connections": ["center"],
+            "animations": ["float", "connect"]
+          },
+          {
+            "label": "Go API",
+            "icon": "⚡",
+            "position": "top-right",
+            "color": "#00bcd4",
+            "connections": ["center"],
+            "animations": ["float", "connect"]
+          },
+          {
+            "label": "Python ML",
+            "icon": "🐍",
+            "position": "bottom-left",
+            "color": "#4caf50",
+            "connections": ["center"],
+            "animations": ["float", "connect"]
+          },
+          {
+            "label": "Ruby Rails",
+            "icon": "💎",
+            "position": "bottom-right",
+            "color": "#f44336",
+            "connections": ["center"],
+            "animations": ["float", "connect"]
+          }
+        ],
+        "databases": [
+          {
+            "label": "MySQL",
+            "icon": "🗄️",
+            "position": "top-center",
+            "color": "#ff9800"
+          },
+          {
+            "label": "MongoDB",
+            "icon": "🍃",
+            "position": "bottom-center",
+            "color": "#4caf50"
+          }
+        ]
+      }
+    },
+    {
+      "id": "data",
+      "title": "Data Engineering Pipeline",
+      "icon": "📊",
+      "color": {
+        "primary": "#10b981",
+        "secondary": "#3b82f6",
+        "accent": "#f59e0b"
+      },
+      "layout": {
+        "type": "pipeline",
+        "flow": "horizontal",
+        "stages": [
+          {
+            "label": "Sources",
+            "icon": "📥",
+            "color": "#3b82f6",
+            "position": "start",
+            "animations": ["dataFlow"]
+          },
+          {
+            "label": "Dataflow ETL",
+            "icon": "⚙️",
+            "color": "#8b5cf6",
+            "position": "25%",
+            "animations": ["processing", "dataFlow"]
+          },
+          {
+            "label": "dbt Transform",
+            "icon": "🔄",
+            "color": "#f59e0b",
+            "position": "50%",
+            "animations": ["transform", "dataFlow"]
+          },
+          {
+            "label": "BigQuery",
+            "icon": "🏢",
+            "color": "#10b981",
+            "position": "75%",
+            "animations": ["storage", "dataFlow"]
+          },
+          {
+            "label": "Analytics",
+            "icon": "📈",
+            "color": "#6366f1",
+            "position": "end",
+            "animations": ["insights"]
+          }
+        ],
+        "connections": {
+          "type": "flowing",
+          "style": "animated-line",
+          "speed": "2s",
+          "direction": "left-to-right"
+        }
+      }
+    },
+    {
+      "id": "soft",
+      "title": "Soft Skills Ecosystem",
+      "icon": "🤝",
+      "color": {
+        "primary": "#f59e0b",
+        "secondary": "#10b981",
+        "accent": "#8b5cf6"
+      },
+      "layout": {
+        "type": "ecosystem",
+        "centerElement": {
+          "type": "hub",
+          "label": "Team Hub",
+          "icon": "👥",
+          "size": "large",
+          "position": "center",
+          "animations": ["pulse", "rotate"]
+        },
+        "orbits": [
+          {
+            "radius": "120px",
+            "elements": [
+              {
+                "label": "Leadership",
+                "icon": "🎯",
+                "color": "#8b5cf6",
+                "angle": 0,
+                "animations": ["orbit", "hover-scale"]
+              },
+              {
+                "label": "Communication",
+                "icon": "💬",
+                "color": "#3b82f6",
+                "angle": 90,
+                "animations": ["orbit", "hover-scale"]
+              },
+              {
+                "label": "Agile",
+                "icon": "🔄",
+                "color": "#f59e0b",
+                "angle": 180,
+                "animations": ["orbit", "hover-scale"]
+              },
+              {
+                "label": "Remote Work",
+                "icon": "🌐",
+                "color": "#10b981",
+                "angle": 270,
+                "animations": ["orbit", "hover-scale"]
+              }
+            ]
+          }
+        ],
+        "particles": {
+          "count": 8,
+          "size": "4px",
+          "color": "#3b82f6",
+          "animations": ["float", "fade"]
+        }
+      }
+    }
+  ],
+  "skillItems": [
+    {
+      "name": "Go/Golang",
+      "category": "programming",
+      "icon": "🐹",
+      "level": 90,
+      "color": "#00ADD8",
+      "position": { "x": 10, "y": 20 },
+      "size": "medium",
+      "animations": {
+        "entrance": {
+          "type": "slideInLeft",
+          "delay": 100,
+          "duration": 600
+        },
+        "hover": {
+          "scale": 1.1,
+          "glow": true,
+          "duration": 300
+        },
+        "idle": {
+          "type": "float",
+          "amplitude": 5,
+          "duration": 3000
+        }
+      },
+      "tooltip": {
+        "enabled": true,
+        "content": "Modern language for building efficient microservices and cloud-native applications with excellent concurrency support.",
+        "position": "top",
+        "delay": 500
+      }
+    },
+    {
+      "name": "Python",
+      "category": "programming",
+      "icon": "🐍",
+      "level": 95,
+      "color": "#3776AB",
+      "position": { "x": 30, "y": 15 },
+      "size": "large",
+      "animations": {
+        "entrance": {
+          "type": "slideInRight",
+          "delay": 200,
+          "duration": 600
+        },
+        "hover": {
+          "scale": 1.15,
+          "rotate": 5,
+          "duration": 300
+        },
+        "idle": {
+          "type": "pulse",
+          "intensity": 0.1,
+          "duration": 2000
+        }
+      },
+      "tooltip": {
+        "enabled": true,
+        "content": "Primary language for data science, ML/AI development, and backend services, used extensively for rapid prototyping and production systems.",
+        "position": "top",
+        "delay": 500
+      }
+    },
+    {
+      "name": "TensorFlow",
+      "category": "ai",
+      "icon": "🧠",
+      "level": 85,
+      "color": "#FF6F00",
+      "position": { "x": 50, "y": 25 },
+      "size": "medium",
+      "animations": {
+        "entrance": {
+          "type": "scaleIn",
+          "delay": 300,
+          "duration": 600
+        },
+        "hover": {
+          "scale": 1.2,
+          "glow": true,
+          "duration": 300
+        },
+        "idle": {
+          "type": "rotate",
+          "speed": 20,
+          "direction": "clockwise"
+        }
+      },
+      "tooltip": {
+        "enabled": true,
+        "content": "An open-source machine learning framework developed by Google for building and deploying machine learning models, particularly neural networks.",
+        "position": "bottom",
+        "delay": 500
+      }
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "icon": "🐳",
+      "level": 80,
+      "color": "#2496ED",
+      "position": { "x": 70, "y": 30 },
+      "size": "medium",
+      "animations": {
+        "entrance": {
+          "type": "bounceIn",
+          "delay": 400,
+          "duration": 800
+        },
+        "hover": {
+          "scale": 1.1,
+          "bounce": true,
+          "duration": 400
+        },
+        "idle": {
+          "type": "sway",
+          "amplitude": 3,
+          "duration": 4000
+        }
+      },
+      "tooltip": {
+        "enabled": true,
+        "content": "A platform for developing, shipping, and running applications in containers, enabling consistent environments across different systems.",
+        "position": "left",
+        "delay": 500
+      }
+    },
+    {
+      "name": "AWS",
+      "category": "cloud",
+      "icon": "☁️",
+      "level": 75,
+      "color": "#FF9900",
+      "position": { "x": 20, "y": 60 },
+      "size": "large",
+      "animations": {
+        "entrance": {
+          "type": "fadeInUp",
+          "delay": 500,
+          "duration": 700
+        },
+        "hover": {
+          "scale": 1.1,
+          "glow": true,
+          "duration": 300
+        },
+        "idle": {
+          "type": "float",
+          "amplitude": 8,
+          "duration": 5000
+        }
+      },
+      "tooltip": {
+        "enabled": true,
+        "content": "A comprehensive, broadly adopted, and widely used cloud platform, offering over 200 fully featured services from data centers globally.",
+        "position": "right",
+        "delay": 500
+      }
+    }
+  ],
+  "projectTransitions": {
+    "type": "horizontal-slide",
+    "duration": 500,
+    "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+    "direction": {
+      "forward": "translateX(-100%)",
+      "backward": "translateX(100%)"
+    },
+    "stages": {
+      "prepare": {
+        "duration": 0,
+        "transform": "translateX(100%)",
+        "opacity": 1
+      },
+      "enter": {
+        "duration": 500,
+        "transform": "translateX(0%)",
+        "opacity": 1
+      },
+      "exit": {
+        "duration": 500,
+        "transform": "translateX(-100%)",
+        "opacity": 1
+      }
+    },
+    "edgeCases": {
+      "firstProject": {
+        "preventBackward": false,
+        "wrapToLast": true
+      },
+      "lastProject": {
+        "preventForward": false,
+        "wrapToFirst": true
+      }
+    },
+    "accessibility": {
+      "reduceMotion": {
+        "enabled": true,
+        "fallback": "fade"
+      },
+      "announcements": {
+        "enabled": true,
+        "template": "Showing project {current} of {total}: {title}"
+      }
+    }
+  },
+  "responsiveBreakpoints": {
+    "mobile": {
+      "maxWidth": "768px",
+      "skillSize": "small",
+      "gridColumns": 1,
+      "fontSize": "0.875rem",
+      "spacing": "1rem"
+    },
+    "tablet": {
+      "maxWidth": "1024px",
+      "skillSize": "medium",
+      "gridColumns": 2,
+      "fontSize": "1rem",
+      "spacing": "1.5rem"
+    },
+    "desktop": {
+      "minWidth": "1025px",
+      "skillSize": "large",
+      "gridColumns": 3,
+      "fontSize": "1.125rem",
+      "spacing": "2rem"
+    }
+  }
+}
