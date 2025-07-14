@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Server, Database, Cloud, Cpu, Network, Users, Target, MessageSquare, GitBranch, Zap } from 'lucide-react';
 import skillsData from '../data/skills.json';
+import skillsVizConfig from '../data/skills-viz.json';
 
 const Skills: React.FC = () => {
   const [activeSection, setActiveSection] = useState<'backend' | 'data' | 'soft' | 'network'>('backend');
   const [animationPhase, setAnimationPhase] = useState(0);
+
+  // Add ref for skills grid
+  const skillsGridRef = React.useRef<HTMLDivElement>(null);
 
   // Animation cycle for data flow
   useEffect(() => {
@@ -13,6 +17,119 @@ const Skills: React.FC = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  // Helper function to get skill position in grid
+  const getSkillPosition = (skillName: string, containerRef: React.RefObject<HTMLDivElement>) => {
+    if (!containerRef.current) return null;
+    
+    const skillElement = containerRef.current.querySelector(`[data-skill="${skillName}"]`) as HTMLElement;
+    if (!skillElement) return null;
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const skillRect = skillElement.getBoundingClientRect();
+    
+    return {
+      x: skillRect.left - containerRect.left + skillRect.width / 2,
+      y: skillRect.top - containerRect.top + skillRect.height / 2
+    };
+  };
+
+  // Render connection lines between skills
+  const renderSkillConnections = (containerRef: React.RefObject<HTMLDivElement>) => {
+    if (!skillsVizConfig.skillConnections?.enabled || !containerRef.current) return null;
+    
+    const connections = skillsVizConfig.skillConnections.connections;
+    
+    return (
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        style={{ overflow: 'visible' }}
+      >
+        <defs>
+          {connections.map((connection, index) => (
+            <React.Fragment key={`defs-${index}`}>
+              {connection.animation?.enabled && connection.animation.type === 'flow' && (
+                <linearGradient id={`flowGradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="transparent" />
+                  <stop offset="50%" stopColor={connection.style.color} />
+                  <stop offset="100%" stopColor="transparent" />
+                  <animateTransform
+                    attributeName="gradientTransform"
+                    type="translate"
+                    values="-100 0;100 0;-100 0"
+                    dur={`${connection.animation.duration}ms`}
+                    repeatCount="indefinite"
+                  />
+                </linearGradient>
+              )}
+              {connection.style.pattern === 'dashed' && (
+                <pattern id={`dashPattern-${index}`} patternUnits="userSpaceOnUse" width="10" height="2">
+                  <rect width="5" height="2" fill={connection.style.color} />
+                  <rect x="5" width="5" height="2" fill="transparent" />
+                </pattern>
+              )}
+              {connection.style.pattern === 'dotted' && (
+                <pattern id={`dotPattern-${index}`} patternUnits="userSpaceOnUse" width="8" height="2">
+                  <circle cx="2" cy="1" r="1" fill={connection.style.color} />
+                </pattern>
+              )}
+            </React.Fragment>
+          ))}
+        </defs>
+        
+        {connections.map((connection, index) => {
+          const fromPos = getSkillPosition(connection.from, containerRef);
+          const toPos = getSkillPosition(connection.to, containerRef);
+          
+          if (!fromPos || !toPos) return null;
+          
+          const getStroke = () => {
+            if (connection.animation?.enabled && connection.animation.type === 'flow') {
+              return `url(#flowGradient-${index})`;
+            }
+            if (connection.style.pattern === 'dashed') {
+              return `url(#dashPattern-${index})`;
+            }
+            if (connection.style.pattern === 'dotted') {
+              return `url(#dotPattern-${index})`;
+            }
+            return connection.style.color;
+          };
+          
+          return (
+            <g key={`connection-${index}`} className="skill-connection">
+              <line
+                x1={fromPos.x}
+                y1={fromPos.y}
+                x2={toPos.x}
+                y2={toPos.y}
+                stroke={getStroke()}
+                strokeWidth={connection.style.width}
+                opacity={connection.style.opacity}
+                className={`transition-all duration-300 ${
+                  connection.animation?.enabled && connection.animation.type === 'pulse' 
+                    ? 'animate-pulse' 
+                    : ''
+                }`}
+              />
+              
+              {/* Connection hover area for interactivity */}
+              <line
+                x1={fromPos.x}
+                y1={fromPos.y}
+                x2={toPos.x}
+                y2={toPos.y}
+                stroke="transparent"
+                strokeWidth={Math.max(connection.style.width * 3, 10)}
+                className="pointer-events-auto cursor-pointer hover:stroke-white hover:stroke-opacity-20"
+                title={`${connection.from} → ${connection.to} (${skillsVizConfig.skillConnections.connectionTypes[connection.type]?.label})`}
+              />
+            </g>
+          );
+        })}
+      </svg>
+    );
+  };
 
   const BackendArchitecture = () => (
     <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 overflow-hidden">
@@ -264,27 +381,39 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {skillsData.categories.map((category, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
-              <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                {category.title}
-              </h3>
-              <div className="space-y-2">
-                {category.skills.slice(0, 5).map((skill, skillIndex) => (
-                  <div key={skillIndex} className="flex items-center justify-between p-2 bg-gray-900 rounded hover:bg-gray-700 transition-colors">
-                    <span className="text-gray-300 text-sm">{skill.name}</span>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  </div>
-                ))}
-                {category.skills.length > 5 && (
-                  <div className="text-gray-500 text-sm text-center pt-2">
-                    +{category.skills.length - 5} more skills
-                  </div>
-                )}
+        <div className="relative">
+          <div 
+            ref={skillsGridRef}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
+          >
+            {skillsData.categories.map((category, index) => (
+              <div 
+                key={index} 
+                data-skill={category.title}
+                className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300"
+              >
+                <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  {category.title}
+                </h3>
+                <div className="space-y-2">
+                  {category.skills.slice(0, 5).map((skill, skillIndex) => (
+                    <div key={skillIndex} className="flex items-center justify-between p-2 bg-gray-900 rounded hover:bg-gray-700 transition-colors">
+                      <span className="text-gray-300 text-sm">{skill.name}</span>
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    </div>
+                  ))}
+                  {category.skills.length > 5 && (
+                    <div className="text-gray-500 text-sm text-center pt-2">
+                      +{category.skills.length - 5} more skills
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          
+          {/* Render connection lines */}
+          {renderSkillConnections(skillsGridRef)}
         </div>
       </div>
     </section>

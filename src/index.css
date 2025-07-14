@@ -75,6 +75,39 @@
   animation: flowAnimation 2s linear infinite;
 }
 
+/* Skill Connection Animations */
+@keyframes connectionPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.skill-connection line {
+  transition: all 0.3s ease;
+}
+
+.skill-connection:hover line {
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Flow animation for connection lines */
+@keyframes connectionFlow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 20;
+  }
+}
+
+.connection-flow {
+  animation: connectionFlow 2s linear infinite;
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;
