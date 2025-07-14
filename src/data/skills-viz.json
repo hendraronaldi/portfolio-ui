@@ -432,6 +432,120 @@
         "enabled": true,
         "template": "Showing project {current} of {total}: {title}"
       }
+    },
+    "skillConnections": {
+      "enabled": true,
+      "connections": [
+        {
+          "from": "Go/Golang",
+          "to": "Docker",
+          "type": "deployment",
+          "strength": 8,
+          "style": {
+            "color": "#3b82f6",
+            "width": 2,
+            "pattern": "solid",
+            "opacity": 0.7
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2000,
+            "direction": "forward"
+          }
+        },
+        {
+          "from": "Python",
+          "to": "TensorFlow",
+          "type": "primary-tool",
+          "strength": 9,
+          "style": {
+            "color": "#10b981",
+            "width": 3,
+            "pattern": "solid",
+            "opacity": 0.8
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 1500,
+            "direction": "bidirectional"
+          }
+        },
+        {
+          "from": "Python",
+          "to": "AWS",
+          "type": "platform",
+          "strength": 7,
+          "style": {
+            "color": "#8b5cf6",
+            "width": 2,
+            "pattern": "dashed",
+            "opacity": 0.6
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2500,
+            "direction": "forward"
+          }
+        },
+        {
+          "from": "Docker",
+          "to": "AWS",
+          "type": "deployment",
+          "strength": 8,
+          "style": {
+            "color": "#f59e0b",
+            "width": 2,
+            "pattern": "solid",
+            "opacity": 0.7
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2000,
+            "direction": "forward"
+          }
+        },
+        {
+          "from": "Go/Golang",
+          "to": "Python",
+          "type": "complementary",
+          "strength": 6,
+          "style": {
+            "color": "#6366f1",
+            "width": 1,
+            "pattern": "dotted",
+            "opacity": 0.5
+          },
+          "animation": {
+            "enabled": false
+          }
+        }
+      ],
+      "connectionTypes": {
+        "primary-tool": {
+          "label": "Primary Tool",
+          "defaultColor": "#10b981",
+          "description": "Primary technology used together"
+        },
+        "deployment": {
+          "label": "Deployment",
+          "defaultColor": "#3b82f6",
+          "description": "Used for deployment and infrastructure"
+        },
+        "platform": {
+          "label": "Platform",
+          "defaultColor": "#8b5cf6",
+          "description": "Platform integration"
+        },
+        "complementary": {
+          "label": "Complementary",
+          "defaultColor": "#6366f1",
+          "description": "Technologies that work well together"
+        }
+      }
     }
   },
   "responsiveBreakpoints": {
