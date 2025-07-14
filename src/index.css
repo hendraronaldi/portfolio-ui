@@ -289,7 +289,9 @@
 /* Focus States for Accessibility */
 .skill-item:focus,
 .project-nav-button:focus,
-.slide-indicator:focus {
+.slide-indicator:focus,
+.network-node:focus,
+.network-connection:focus {
   outline: 2px solid #8b5cf6;
   outline-offset: 2px;
 }
@@ -304,4 +306,44 @@
 @keyframes loading {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* Network Visualization Styles */
+.network-connection {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.network-connection:hover {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.network-node {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.network-node:hover {
+  stroke: #ffffff !important;
+  stroke-width: 2px;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Connection animations */
+@keyframes connectionFlow {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 30; }
+}
+
+@keyframes connectionPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.connection-flow {
+  animation: connectionFlow 2s linear infinite;
+}
+
+.connection-pulse {
+  animation: connectionPulse 2s ease-in-out infinite;
 }

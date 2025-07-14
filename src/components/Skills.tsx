@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Server, Database, Cloud, Cpu, Network, Users, Target, MessageSquare, GitBranch, Zap } from 'lucide-react';
 import skillsData from '../data/skills.json';
+import SkillsNetwork from './SkillsNetwork';
 
 const Skills: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<'backend' | 'data' | 'soft'>('backend');
+  const [activeSection, setActiveSection] = useState<'backend' | 'data' | 'soft' | 'network'>('backend');
   const [animationPhase, setAnimationPhase] = useState(0);
 
   // Animation cycle for data flow
@@ -237,6 +238,7 @@ const Skills: React.FC = () => {
               { key: 'backend', label: 'Backend Architecture', icon: Server },
               { key: 'data', label: 'Data Pipeline', icon: Database },
               { key: 'soft', label: 'Soft Skills', icon: Users },
+              { key: 'network', label: 'Skills Network', icon: Network },
             ].map((section) => (
               <button
                 key={section.key}
@@ -260,6 +262,7 @@ const Skills: React.FC = () => {
             {activeSection === 'backend' && <BackendArchitecture />}
             {activeSection === 'data' && <DataPipeline />}
             {activeSection === 'soft' && <SoftSkillsEcosystem />}
+            {activeSection === 'network' && <SkillsNetwork />}
           </div>
         </div>
 
