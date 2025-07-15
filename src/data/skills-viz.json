@@ -226,6 +226,244 @@
       }
     }
   ],
+  "visualizationConnections": {
+    "backend": {
+      "enabled": true,
+      "connections": [
+        {
+          "from": "graphql",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 3000
+          }
+        },
+        {
+          "from": "go-api",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 3000
+          }
+        },
+        {
+          "from": "python-ml",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 3000
+          }
+        },
+        {
+          "from": "ruby-rails",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 3000
+          }
+        },
+        {
+          "from": "mysql",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.6,
+            "pattern": "dashed"
+          },
+          "animation": {
+            "enabled": false
+          }
+        },
+        {
+          "from": "mongodb",
+          "to": "aws-cloud",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.6,
+            "pattern": "dashed"
+          },
+          "animation": {
+            "enabled": false
+          }
+        },
+        {
+          "from": "aws-cloud",
+          "to": "load-balancer",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.7,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 2000
+          }
+        }
+      ]
+    },
+    "data": {
+      "enabled": true,
+      "connections": [
+        {
+          "from": "sources",
+          "to": "dataflow-etl",
+          "style": {
+            "color": "#ffffff",
+            "width": 3,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2500
+          }
+        },
+        {
+          "from": "dataflow-etl",
+          "to": "dbt-transform",
+          "style": {
+            "color": "#ffffff",
+            "width": 3,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2500
+          }
+        },
+        {
+          "from": "dbt-transform",
+          "to": "bigquery",
+          "style": {
+            "color": "#ffffff",
+            "width": 3,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2500
+          }
+        },
+        {
+          "from": "bigquery",
+          "to": "analytics",
+          "style": {
+            "color": "#ffffff",
+            "width": 3,
+            "opacity": 0.8,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "flow",
+            "duration": 2500
+          }
+        }
+      ]
+    },
+    "soft": {
+      "enabled": true,
+      "connections": [
+        {
+          "from": "leadership",
+          "to": "team-hub",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.7,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 2000
+          }
+        },
+        {
+          "from": "communication",
+          "to": "team-hub",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.7,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 2000
+          }
+        },
+        {
+          "from": "agile",
+          "to": "team-hub",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.7,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 2000
+          }
+        },
+        {
+          "from": "remote-work",
+          "to": "team-hub",
+          "style": {
+            "color": "#ffffff",
+            "width": 2,
+            "opacity": 0.7,
+            "pattern": "solid"
+          },
+          "animation": {
+            "enabled": true,
+            "type": "pulse",
+            "duration": 2000
+          }
+        }
+      ]
+    }
+  },
   "skillItems": [
     {
       "name": "Go/Golang",

@@ -133,8 +133,96 @@ const Skills: React.FC = () => {
 
   const BackendArchitecture = () => (
     <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 overflow-hidden">
+      {/* SVG for connection lines */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        <defs>
+          <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="50%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="transparent" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              values="-100 0;100 0;-100 0"
+              dur="3s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+          <pattern id="dashPattern" patternUnits="userSpaceOnUse" width="10" height="2">
+            <rect width="5" height="2" fill="#ffffff" />
+            <rect x="5" width="5" height="2" fill="transparent" />
+          </pattern>
+        </defs>
+        
+        {/* GraphQL to AWS Cloud */}
+        <path
+          d="M 120 120 Q 200 150 400 200"
+          stroke="url(#flowGradient)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.8"
+        />
+        
+        {/* Go API to AWS Cloud */}
+        <path
+          d="M 680 120 Q 600 150 400 200"
+          stroke="url(#flowGradient)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.8"
+        />
+        
+        {/* Python ML to AWS Cloud */}
+        <path
+          d="M 120 280 Q 200 250 400 200"
+          stroke="url(#flowGradient)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.8"
+        />
+        
+        {/* Ruby Rails to AWS Cloud */}
+        <path
+          d="M 680 280 Q 600 250 400 200"
+          stroke="url(#flowGradient)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.8"
+        />
+        
+        {/* MySQL to AWS Cloud */}
+        <path
+          d="M 320 50 Q 360 100 400 200"
+          stroke="url(#dashPattern)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.6"
+        />
+        
+        {/* MongoDB to AWS Cloud */}
+        <path
+          d="M 480 50 Q 440 100 400 200"
+          stroke="url(#dashPattern)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.6"
+        />
+        
+        {/* AWS Cloud to Load Balancer */}
+        <line
+          x1="400"
+          y1="240"
+          x2="400"
+          y2="320"
+          stroke="#ffffff"
+          strokeWidth="2"
+          opacity="0.7"
+          className="animate-pulse"
+        />
+      </svg>
+
       {/* Background grid */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 z-0">
         <div className="grid grid-cols-8 grid-rows-6 h-full w-full">
           {Array.from({ length: 48 }).map((_, i) => (
             <div key={i} className="border border-blue-500/20"></div>
@@ -143,7 +231,7 @@ const Skills: React.FC = () => {
       </div>
 
       {/* Central Cloud Platform */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
         <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 shadow-lg">
           <Cloud size={32} className="text-white mx-auto mb-2" />
           <div className="text-white text-sm font-semibold text-center">AWS Cloud</div>
@@ -161,32 +249,16 @@ const Skills: React.FC = () => {
         { name: 'Python ML', pos: 'bottom-20 left-20', color: 'from-green-500 to-emerald-500', icon: Cpu },
         { name: 'Ruby Rails', pos: 'bottom-20 right-20', color: 'from-red-500 to-pink-500', icon: Server },
       ].map((service, index) => (
-        <div key={service.name} className={`absolute ${service.pos}`}>
+        <div key={service.name} className={`absolute ${service.pos} z-20`}>
           <div className={`bg-gradient-to-r ${service.color} rounded-lg p-3 shadow-lg transform hover:scale-110 transition-all duration-300`}>
             <service.icon size={24} className="text-white mx-auto mb-1" />
             <div className="text-white text-xs font-medium text-center">{service.name}</div>
           </div>
-          
-          {/* Connection lines with animation */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-            <line
-              x1="50%"
-              y1="50%"
-              x2="50%"
-              y2="200%"
-              stroke="url(#gradient)"
-              strokeWidth="2"
-              className={`${animationPhase === index ? 'opacity-100' : 'opacity-30'} transition-opacity duration-500`}
-              strokeDasharray="5,5"
-            >
-              <animate attributeName="stroke-dashoffset" values="0;10" dur="1s" repeatCount="indefinite" />
-            </line>
-          </svg>
         </div>
       ))}
 
       {/* Database Clusters */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <div className="flex space-x-4">
           <div className="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg p-3 shadow-lg">
             <Database size={20} className="text-white mx-auto mb-1" />
@@ -200,29 +272,63 @@ const Skills: React.FC = () => {
       </div>
 
       {/* Load Balancer */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
         <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg p-3 shadow-lg">
           <Network size={20} className="text-white mx-auto mb-1" />
           <div className="text-white text-xs text-center">Load Balancer</div>
         </div>
       </div>
-
-      {/* SVG Gradients */}
-      <svg className="absolute inset-0 w-0 h-0">
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#8b5cf6" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   );
 
   const DataPipeline = () => (
     <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-6 overflow-hidden">
+      {/* SVG for pipeline connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        <defs>
+          <linearGradient id="pipelineFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="50%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="transparent" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              values="-100 0;100 0;-100 0"
+              dur="2.5s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+        </defs>
+        
+        {/* Pipeline flow connections */}
+        <path
+          d="M 120 200 L 240 200"
+          stroke="url(#pipelineFlow)"
+          strokeWidth="3"
+          opacity="0.8"
+        />
+        <path
+          d="M 280 200 L 400 200"
+          stroke="url(#pipelineFlow)"
+          strokeWidth="3"
+          opacity="0.8"
+        />
+        <path
+          d="M 440 200 L 560 200"
+          stroke="url(#pipelineFlow)"
+          strokeWidth="3"
+          opacity="0.8"
+        />
+        <path
+          d="M 600 200 L 720 200"
+          stroke="url(#pipelineFlow)"
+          strokeWidth="3"
+          opacity="0.8"
+        />
+      </svg>
+
       {/* Pipeline Flow */}
-      <div className="flex items-center justify-between h-full">
+      <div className="flex items-center justify-between h-full z-20 relative">
         {/* Source Systems */}
         <div className="flex flex-col space-y-4">
           <div className="text-center">
@@ -267,33 +373,73 @@ const Skills: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Animated Data Flow */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        <path
-          d="M 80 200 Q 200 200 320 200 Q 440 200 560 200 Q 680 200 800 200"
-          stroke="url(#dataGradient)"
-          strokeWidth="3"
-          fill="none"
-          strokeDasharray="10,5"
-        >
-          <animate attributeName="stroke-dashoffset" values="0;15" dur="2s" repeatCount="indefinite" />
-        </path>
-        <defs>
-          <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="50%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#06b6d4" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   );
 
   const SoftSkillsEcosystem = () => (
     <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 overflow-hidden">
+      {/* SVG for soft skills connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        <defs>
+          <radialGradient id="pulseGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8">
+              <animate attributeName="stop-opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        
+        {/* Leadership to Team Hub */}
+        <line
+          x1="400"
+          y1="80"
+          x2="400"
+          y2="180"
+          stroke="#ffffff"
+          strokeWidth="2"
+          opacity="0.7"
+          className="animate-pulse"
+        />
+        
+        {/* Communication to Team Hub */}
+        <line
+          x1="120"
+          y1="200"
+          x2="360"
+          y2="200"
+          stroke="#ffffff"
+          strokeWidth="2"
+          opacity="0.7"
+          className="animate-pulse"
+        />
+        
+        {/* Agile to Team Hub */}
+        <line
+          x1="680"
+          y1="200"
+          x2="440"
+          y2="200"
+          stroke="#ffffff"
+          strokeWidth="2"
+          opacity="0.7"
+          className="animate-pulse"
+        />
+        
+        {/* Remote Work to Team Hub */}
+        <line
+          x1="400"
+          y1="320"
+          x2="400"
+          y2="220"
+          stroke="#ffffff"
+          strokeWidth="2"
+          opacity="0.7"
+          className="animate-pulse"
+        />
+      </svg>
+
       {/* Central Collaboration Hub */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
         <div className="relative bg-gradient-to-r from-green-500 to-emerald-500 rounded-full p-6 shadow-lg">
           <Users size={32} className="text-white" />
           <div className="absolute inset-0 bg-green-400 rounded-full opacity-20 animate-pulse"></div>
@@ -308,21 +454,16 @@ const Skills: React.FC = () => {
         { name: 'Agile', pos: 'top-1/2 right-16 transform -translate-y-1/2', icon: Zap, color: 'from-orange-500 to-red-500' },
         { name: 'Remote Work', pos: 'bottom-16 left-1/2 transform -translate-x-1/2', icon: Network, color: 'from-pink-500 to-rose-500' },
       ].map((skill, index) => (
-        <div key={skill.name} className={`absolute ${skill.pos}`}>
+        <div key={skill.name} className={`absolute ${skill.pos} z-20`}>
           <div className={`bg-gradient-to-r ${skill.color} rounded-lg p-4 shadow-lg transform hover:scale-110 transition-all duration-300`}>
             <skill.icon size={24} className="text-white mx-auto mb-2" />
             <div className="text-white text-xs font-medium text-center">{skill.name}</div>
           </div>
-          
-          {/* Connection lines */}
-          <div className={`absolute top-1/2 left-1/2 w-20 h-0.5 bg-gradient-to-r from-transparent via-white to-transparent transform origin-left ${
-            index === 0 ? 'rotate-90' : index === 1 ? 'rotate-0' : index === 2 ? 'rotate-180' : 'rotate-270'
-          } ${animationPhase === index ? 'opacity-100' : 'opacity-30'} transition-opacity duration-500`}></div>
         </div>
       ))}
 
       {/* Orbiting Elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-15">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
