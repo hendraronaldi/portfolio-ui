@@ -25,10 +25,10 @@ const Skills: React.FC = () => {
     const skillElement = containerRef.current.querySelector(`[data-skill="${skillName}"]`) as HTMLElement;
     if (!skillElement) return null;
     
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const skillRect = skillElement.getBoundingClientRect();
-    
-    return {
+      'top-left': 'top-16 left-16',
+      'top-right': 'top-16 right-16',
+      'bottom-left': 'bottom-16 left-16',
+      'bottom-right': 'bottom-16 right-16',
       x: skillRect.left - containerRect.left + skillRect.width / 2,
       y: skillRect.top - containerRect.top + skillRect.height / 2
     };
@@ -450,7 +450,7 @@ const Skills: React.FC = () => {
       {/* Surrounding Skills */}
       {[
         { name: 'Leadership', pos: 'top-16 left-1/2 transform -translate-x-1/2', icon: Target, color: 'from-purple-500 to-indigo-500' },
-        { name: 'Communication', pos: 'top-1/2 left-16 transform -translate-y-1/2', icon: MessageSquare, color: 'from-blue-500 to-cyan-500' },
+          <div key={satellite.label} className={`absolute ${getPositionClass(satellite.position)} z-20`}>
         { name: 'Agile', pos: 'top-1/2 right-16 transform -translate-y-1/2', icon: Zap, color: 'from-orange-500 to-red-500' },
         { name: 'Remote Work', pos: 'bottom-16 left-1/2 transform -translate-x-1/2', icon: Network, color: 'from-pink-500 to-rose-500' },
       ].map((skill, index) => (
@@ -458,22 +458,6 @@ const Skills: React.FC = () => {
           <div className={`bg-gradient-to-r ${skill.color} rounded-lg p-4 shadow-lg transform hover:scale-110 transition-all duration-300`}>
             <skill.icon size={24} className="text-white mx-auto mb-2" />
             <div className="text-white text-xs font-medium text-center">{skill.name}</div>
-          </div>
-        </div>
-      ))}
-
-      {/* Orbiting Elements */}
-      <div className="absolute inset-0 z-15">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"
-            style={{
-              top: '50%',
-              left: '50%',
-              transform: `translate(-50%, -50%) rotate(${i * 60 + animationPhase * 90}deg) translateX(120px)`,
-              transition: 'transform 2s ease-in-out',
-            }}
           ></div>
         ))}
       </div>
@@ -501,63 +485,72 @@ const Skills: React.FC = () => {
                 onClick={() => setActiveSection(section.key as any)}
                 className={`flex items-center px-6 py-3 rounded-lg transition-all duration-300 ${
                   activeSection === section.key
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                }`}
+          {/* Go API to AWS Cloud - from top-right to center */}
+          <line
+            x1="664"
+            y1="120"
+            x2="400"
+            y2="200"
               >
                 <section.icon size={20} className="mr-2" />
-                <span className="font-medium">{section.label}</span>
               </button>
             ))}
           </div>
-        </div>
-
-        {/* Dynamic Content */}
-        <div className="mb-12">
+          {/* Python ML to AWS Cloud - from bottom-left to center */}
+          <line
+            x1="136"
+            y1="280"
+            x2="400"
+            y2="200"
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 800 400">
           <div className="transition-all duration-500 ease-in-out">
-            {activeSection === 'backend' && <BackendArchitecture />}
             {activeSection === 'data' && <DataPipeline />}
             {activeSection === 'soft' && <SoftSkillsEcosystem />}
           </div>
-        </div>
-
-        {/* Skills Grid */}
+          {/* Ruby Rails to AWS Cloud - from bottom-right to center */}
+          <line
+            x1="664"
+            y1="280"
+            x2="400"
+            y2="200"
         <div className="relative">
           <div 
-            ref={skillsGridRef}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
           >
             {skillsData.categories.map((category, index) => (
-              <div 
-                key={index} 
-                data-skill={category.title}
-                className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300"
+          {/* MySQL to AWS Cloud - from top databases to center */}
+          <line
+            x1="360"
+            y1="60"
+            x2="400"
+            y2="180"
+            stroke="#ffffff"
               >
-                <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  {category.title}
+            opacity="0.6"
+            strokeDasharray="5,5"
                 </h3>
                 <div className="space-y-2">
-                  {category.skills.slice(0, 5).map((skill, skillIndex) => (
-                    <div key={skillIndex} className="flex items-center justify-between p-2 bg-gray-900 rounded hover:bg-gray-700 transition-colors">
-                      <span className="text-gray-300 text-sm">{skill.name}</span>
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    </div>
-                  ))}
-                  {category.skills.length > 5 && (
-                    <div className="text-gray-500 text-sm text-center pt-2">
-                      +{category.skills.length - 5} more skills
-                    </div>
+          {/* MongoDB to AWS Cloud - from top databases to center */}
+          <line
+            x1="440"
+            y1="60"
+            x2="400"
+            y2="180"
+            stroke="#ffffff"
+          <line
+            opacity="0.6"
+            strokeDasharray="5,5"
+            x2="400"
+            y2="200"
                   )}
                 </div>
-              </div>
             ))}
-          </div>
+            y1="220"
           
-          {/* Render connection lines */}
+            y2="300"
           {renderSkillConnections(skillsGridRef)}
         </div>
       </div>
-    </section>
   );
 };
 
