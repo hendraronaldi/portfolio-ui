@@ -34,9 +34,12 @@ const ChatPopup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasShownInitialMessages, setHasShownInitialMessages] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<Record<number, boolean>>({});
+  const [isRateLimited, setIsRateLimited] = useState(false);
+  const [retryAttempted, setRetryAttempted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -64,6 +67,18 @@ const ChatPopup: React.FC = () => {
   const toggleChat = () => {
     setIsOpen(!isOpen);
     setError(null);
+    
+    // Clear retry timeout if chat is closed
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+    
+    // Reset rate limiting state when closing chat
+    if (!isOpen) {
+      setIsRateLimited(false);
+      setRetryAttempted(false);
+    }
   };
 
   const formatTimestamp = () => {
@@ -91,6 +106,12 @@ const ChatPopup: React.FC = () => {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        // Check for rate limiting (429 status)
+        if (error.response?.status === 429) {
+          const rateLimitError = new Error('RATE_LIMITED');
+          rateLimitError.name = 'RateLimitError';
+          throw rateLimitError;
+        }
         throw new Error(error.response?.data?.message || 'Failed to send message. Please try again.');
       }
       throw new Error('An unexpected error occurred. Please try again.');
@@ -99,10 +120,70 @@ const ChatPopup: React.FC = () => {
     }
   };
 
+  const handleRateLimit = async (userMessage: string, messageType: MessageType = 'text', file?: File) => {
+    setIsRateLimited(true);
+    setError(null);
+    
+    // Add polite busy message
+    const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
+    const busyMessage: Message = {
+      id: nextId,
+      sender: 'bot',
+      content: "I'm currently experiencing high traffic and am a bit busy at the moment. Please give me a minute to process your request. 🤖",
+      timestamp: formatTimestamp(),
+      type: 'text'
+    };
+    
+    setMessages(prev => [...prev, busyMessage]);
+    
+    // Set retry timeout for 1 minute
+    retryTimeoutRef.current = setTimeout(async () => {
+      try {
+        setIsTyping(true);
+        const response = await sendMessageToAPI(userMessage, messageType, file);
+        
+        const retryBotMessage: Message = {
+          id: nextId + 1,
+          sender: 'bot',
+          content: response.message,
+          timestamp: formatTimestamp(),
+          type: 'text',
+          previousUserMessage: userMessage
+        };
+        
+        setMessages(prev => [...prev, retryBotMessage]);
+        setIsRateLimited(false);
+        setRetryAttempted(false);
+      } catch (retryError) {
+        if (retryError instanceof Error && retryError.name === 'RateLimitError') {
+          // Second rate limit - show apology and unlock input
+          const apologyMessage: Message = {
+            id: nextId + 1,
+            sender: 'bot',
+            content: "I apologize, but I'm unable to process your request at the moment due to high demand. Please wait a moment and try chatting again. Thank you for your patience! 🙏",
+            timestamp: formatTimestamp(),
+            type: 'text'
+          };
+          
+          setMessages(prev => [...prev, apologyMessage]);
+          setIsRateLimited(false);
+          setRetryAttempted(true);
+        } else {
+          // Other error during retry
+          setError(retryError instanceof Error ? retryError.message : 'An unexpected error occurred during retry');
+          setIsRateLimited(false);
+          setRetryAttempted(false);
+        }
+      } finally {
+        setIsTyping(false);
+      }
+    }, 60000); // 1 minute
+  };
   const handleSendMessage = async () => {
-    if ((!newMessage.trim() && !selectedFile) || isTyping) return;
+    if ((!newMessage.trim() && !selectedFile) || isTyping || isRateLimited) return;
 
     setError(null);
+    setRetryAttempted(false);
     const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
     
     try {
@@ -118,17 +199,27 @@ const ChatPopup: React.FC = () => {
         };
         
         setMessages(prev => [...prev, fileMessage]);
-        const response = await sendMessageToAPI(selectedFile.name, fileType, selectedFile);
         
-        const botMessage: Message = {
-          id: nextId + 1,
-          sender: 'bot',
-          content: response.message,
-          timestamp: formatTimestamp(),
-          type: 'text'
-        };
+        try {
+          const response = await sendMessageToAPI(selectedFile.name, fileType, selectedFile);
+          
+          const botMessage: Message = {
+            id: nextId + 1,
+            sender: 'bot',
+            content: response.message,
+            timestamp: formatTimestamp(),
+            type: 'text'
+          };
+          
+          setMessages(prev => [...prev, botMessage]);
+        } catch (error) {
+          if (error instanceof Error && error.name === 'RateLimitError') {
+            await handleRateLimit(selectedFile.name, fileType, selectedFile);
+          } else {
+            throw error;
+          }
+        }
         
-        setMessages(prev => [...prev, botMessage]);
         setSelectedFile(null);
       }
       
@@ -143,22 +234,34 @@ const ChatPopup: React.FC = () => {
         };
         
         setMessages(prev => [...prev, textMessage]);
-        const response = await sendMessageToAPI(newMessage);
         
-        const botMessage: Message = {
-          id: nextId + (selectedFile ? 3 : 1),
-          sender: 'bot',
-          content: response.message,
-          timestamp: formatTimestamp(),
-          type: 'text',
-          previousUserMessage: userMessage
-        };
+        try {
+          const response = await sendMessageToAPI(newMessage);
+          
+          const botMessage: Message = {
+            id: nextId + (selectedFile ? 3 : 1),
+            sender: 'bot',
+            content: response.message,
+            timestamp: formatTimestamp(),
+            type: 'text',
+            previousUserMessage: userMessage
+          };
+          
+          setMessages(prev => [...prev, botMessage]);
+        } catch (error) {
+          if (error instanceof Error && error.name === 'RateLimitError') {
+            await handleRateLimit(newMessage);
+          } else {
+            throw error;
+          }
+        }
         
-        setMessages(prev => [...prev, botMessage]);
         setNewMessage('');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      if (!(err instanceof Error && err.name === 'RateLimitError')) {
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      }
     }
   };
 
@@ -376,15 +479,16 @@ const ChatPopup: React.FC = () => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="Type a message..."
-              className="flex-1 bg-transparent border-none focus:outline-none text-white resize-none max-h-20"
+              placeholder={isRateLimited ? "Please wait, processing your request..." : "Type a message..."}
+              className={`flex-1 bg-transparent border-none focus:outline-none text-white resize-none max-h-20 ${isRateLimited ? 'opacity-50' : ''}`}
               rows={1}
+              disabled={isRateLimited}
             />
             <div className="flex space-x-2 ml-2">
               <button 
                 onClick={handleSendMessage}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-full"
-                disabled={isTyping}
+                className={`bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-full ${(isTyping || isRateLimited) ? 'opacity-50' : ''}`}
+                disabled={isTyping || isRateLimited}
               >
                 <Send size={18} />
               </button>
@@ -395,6 +499,7 @@ const ChatPopup: React.FC = () => {
               onChange={handleFileSelect}
               className="hidden"
               accept="image/*,.pdf,.doc,.docx,.txt"
+              disabled={isRateLimited}
             />
           </div>
         </div>
