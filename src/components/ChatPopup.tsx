@@ -144,7 +144,11 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + 1,
           sender: 'bot',
-          content: typeof response.message === 'string' ? response.message : JSON.stringify(response.message),
+          content: typeof response.message === 'string' 
+            ? response.message 
+            : typeof response.message === 'object' && response.message !== null
+              ? JSON.stringify(response.message, null, 2)
+              : String(response.message || "I received your message! Let me help you with information about Hendra's background and experience."),
           timestamp: formatTimestamp(),
           type: 'markdown'
         };
@@ -169,9 +173,13 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + (selectedFile ? 3 : 1),
           sender: 'bot',
-          content: typeof response.message === 'string' ? response.message : (response.message ? JSON.stringify(response.message) : "I received your message! Let me help you with information about Hendra's background and experience."),
+          content: typeof response.message === 'string' 
+            ? response.message 
+            : typeof response.message === 'object' && response.message !== null
+              ? JSON.stringify(response.message, null, 2)
+              : String(response.message || "I received your message! Let me help you with information about Hendra's background and experience."),
           timestamp: formatTimestamp(),
-          type: 'markdown', // Default to markdown for bot responses
+          type: 'markdown',
           previousUserMessage: userMessage
         };
         
@@ -283,9 +291,22 @@ const ChatPopup: React.FC = () => {
               >
                 {(message.type === 'text' || message.type === 'markdown') && (
                   message.type === 'markdown' ? (
-                    <MarkdownRenderer content={typeof message.content === 'string' ? message.content : JSON.stringify(message.content)} />
+                    <MarkdownRenderer content={
+                      typeof message.content === 'string' 
+                        ? message.content 
+                        : typeof message.content === 'object' && message.content !== null
+                          ? JSON.stringify(message.content, null, 2)
+                          : String(message.content)
+                    } />
                   ) : (
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <p className="whitespace-pre-wrap">
+                      {typeof message.content === 'string' 
+                        ? message.content 
+                        : typeof message.content === 'object' && message.content !== null
+                          ? JSON.stringify(message.content, null, 2)
+                          : String(message.content)
+                      }
+                    </p>
                   )
                 )}
                 
