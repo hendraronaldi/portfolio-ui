@@ -144,9 +144,9 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + 1,
           sender: 'bot',
-          content: response.message,
+          content: typeof response.message === 'string' ? response.message : JSON.stringify(response.message),
           timestamp: formatTimestamp(),
-          type: 'text'
+          type: 'markdown'
         };
         
         setMessages(prev => [...prev, botMessage]);
@@ -169,7 +169,7 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + (selectedFile ? 3 : 1),
           sender: 'bot',
-          content: response.message || "I received your message! Let me help you with information about Hendra's background and experience.",
+          content: typeof response.message === 'string' ? response.message : (response.message ? JSON.stringify(response.message) : "I received your message! Let me help you with information about Hendra's background and experience."),
           timestamp: formatTimestamp(),
           type: 'markdown', // Default to markdown for bot responses
           previousUserMessage: userMessage
@@ -283,14 +283,10 @@ const ChatPopup: React.FC = () => {
               >
                 {(message.type === 'text' || message.type === 'markdown') && (
                   message.type === 'markdown' ? (
-                    <MarkdownRenderer content={message.content} />
+                    <MarkdownRenderer content={typeof message.content === 'string' ? message.content : JSON.stringify(message.content)} />
                   ) : (
                     <p className="whitespace-pre-wrap">{message.content}</p>
                   )
-                )}
-                
-                {message.type === 'text' && message.sender === 'user' && (
-                  <p className="whitespace-pre-wrap">{message.content}</p>
                 )}
                 
                 {message.type === 'image' && (
