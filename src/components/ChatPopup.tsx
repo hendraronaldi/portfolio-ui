@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Paperclip, Image, ThumbsUp, ThumbsDown } from 'lucide-react';
 import axios from 'axios';
-import initialMessages from '../data/chat-messages.json';
+import welcomeData from '../data/welcome-message.json';
+import MarkdownRenderer from './MarkdownRenderer';
 
 // Access the environment variables
 const backendProxyUrl = import.meta.env.VITE_BE_PROXY_URL;
 const apiKey = import.meta.env.VITE_FE_API_KEY;
 
-type MessageType = 'text' | 'image' | 'file';
+type MessageType = 'text' | 'image' | 'file' | 'markdown';
 
 interface Message {
   id: number;
@@ -34,6 +35,7 @@ const ChatPopup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasShownInitialMessages, setHasShownInitialMessages] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<Record<number, boolean>>({});
+  const [currentWelcomeIndex, setCurrentWelcomeIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -47,17 +49,36 @@ const ChatPopup: React.FC = () => {
       setHasShownInitialMessages(true);
       setIsTyping(true);
 
-      setTimeout(() => {
-        setMessages([initialMessages[0]]);
-        
+      // Show welcome messages with staggered timing
+      const showWelcomeMessage = (index: number) => {
+        if (index >= welcomeData.welcomeMessages.length) {
+          setIsTyping(false);
+          return;
+        }
+
         setTimeout(() => {
-          setIsTyping(true);
-          setTimeout(() => {
-            setMessages(prev => [...prev, initialMessages[1]]);
+          const welcomeMessage = welcomeData.welcomeMessages[index];
+          const message: Message = {
+            id: index + 1,
+            sender: welcomeMessage.sender as 'user' | 'bot',
+            content: welcomeMessage.content,
+            timestamp: welcomeMessage.timestamp,
+            type: welcomeMessage.type as MessageType
+          };
+          
+          setMessages(prev => [...prev, message]);
+          setCurrentWelcomeIndex(index + 1);
+          
+          if (index < welcomeData.welcomeMessages.length - 1) {
+            setIsTyping(true);
+            showWelcomeMessage(index + 1);
+          } else {
             setIsTyping(false);
-          }, 1500);
-        }, 500);
-      }, 1000);
+          }
+        }, index === 0 ? 1000 : 2500); // First message after 1s, subsequent after 2.5s
+      };
+
+      showWelcomeMessage(0);
     }
   }, [isOpen, hasShownInitialMessages]);
 
@@ -103,7 +124,7 @@ const ChatPopup: React.FC = () => {
     if ((!newMessage.trim() && !selectedFile) || isTyping) return;
 
     setError(null);
-    const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
+    const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : welcomeData.welcomeMessages.length + 1;
     
     try {
       if (selectedFile) {
@@ -148,9 +169,9 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + (selectedFile ? 3 : 1),
           sender: 'bot',
-          content: response.message,
+          content: response.message || "I received your message! Let me help you with information about Hendra's background and experience.",
           timestamp: formatTimestamp(),
-          type: 'text',
+          type: 'markdown', // Default to markdown for bot responses
           previousUserMessage: userMessage
         };
         
@@ -260,7 +281,15 @@ const ChatPopup: React.FC = () => {
                     : 'bg-gray-800 text-white'
                 }`}
               >
-                {message.type === 'text' && (
+                {(message.type === 'text' || message.type === 'markdown') && (
+                  message.type === 'markdown' ? (
+                    <MarkdownRenderer content={message.content} />
+                  ) : (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  )
+                )}
+                
+                {message.type === 'text' && message.sender === 'user' && (
                   <p className="whitespace-pre-wrap">{message.content}</p>
                 )}
                 
@@ -291,6 +320,8 @@ const ChatPopup: React.FC = () => {
                   
                   {message.sender === 'bot' && !message.content.includes("Hi there!") && 
                   !message.content.includes("I can help you with") && !message.content.includes("How can I help you today?") && (
+                  !message.content.includes("Welcome to Hendra's Interactive Portfolio Chat") &&
+                  !message.content.includes("Markdown Formatting Examples") && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>
@@ -313,6 +344,7 @@ const ChatPopup: React.FC = () => {
                         <span className="text-xs text-gray-400">Thanks for your feedback!</span>
                       )}
                     </div>
+                  )}
                   )}
                 </div>
               </div>

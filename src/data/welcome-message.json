@@ -1,0 +1,18 @@
+{
+  "welcomeMessages": [
+    {
+      "id": "welcome-1",
+      "sender": "bot",
+      "content": "# Welcome to Hendra's Interactive Portfolio Chat! 👋\n\nI'm your **AI assistant** here to help you explore Hendra's professional journey, projects, and expertise. I support full markdown formatting to provide rich, interactive responses!\n\n## What I Can Help You With:\n\n- 🚀 **Projects & Experience**: Learn about Hendra's work in AI, data engineering, and software development\n- 💼 **Technical Skills**: Explore expertise in Go, Python, TensorFlow, AWS, and more\n- 🎯 **Career Journey**: Understand his progression from software engineer to AI specialist\n- 📊 **Specific Technologies**: Get detailed insights about any technology in his stack\n\n---\n\n### 💡 **Try asking me questions like:**\n\n> \"Tell me about Hendra's AI projects\"\n> \n> \"What experience does he have with microservices?\"\n> \n> \"Show me his data engineering work\"\n\n---\n\n**Ready to explore?** Just type your question below! ⬇️",
+      "timestamp": "2024-03-09T10:30:00Z",
+      "type": "markdown"
+    },
+    {
+      "id": "welcome-2", 
+      "sender": "bot",
+      "content": "## 🎨 **Markdown Formatting Examples**\n\nI can render rich content with full markdown support:\n\n### Text Formatting\n- **Bold text** for emphasis\n- *Italic text* for subtle emphasis  \n- `inline code` for technical terms\n- ~~Strikethrough~~ for corrections\n\n### Code Examples\n```python\n# Python example\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n```\n\n```go\n// Go example\nfunc main() {\n    fmt.Println(\"Hello, World!\")\n}\n```\n\n### Lists & Organization\n1. **First priority item**\n2. **Second priority item**\n   - Sub-item with details\n   - Another sub-item\n3. **Third priority item**\n\n### Links & Resources\n- 🔗 [Hendra's GitHub](https://github.com/hendraronaldi)\n- 🔗 [LinkedIn Profile](https://linkedin.com/in/hendra-ronaldi-4a7a1b121)\n- 📧 [Email Contact](mailto:hendraronaldi10@gmail.com)\n\n### Tables\n| Technology | Experience | Projects |\n|------------|------------|----------|\n| Python | 5+ years | 15+ |\n| Go | 3+ years | 10+ |\n| TensorFlow | 2+ years | 8+ |\n\n> **Quote**: \"Building intelligent solutions at the intersection of software engineering, data science, and artificial intelligence.\"\n\n---\n\n**How can I help you today?** 🤔",
+      "timestamp": "2024-03-09T10:30:05Z", 
+      "type": "markdown"
+    }
+  ]
+}
