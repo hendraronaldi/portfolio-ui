@@ -96,7 +96,7 @@ const ChatPopup: React.FC = () => {
     try {
       setIsTyping(true);
 
-      const payload = {"query": content}
+      const payload = {"query": content};
 
       const response = await axios.post<APIResponse>(
         backendProxyUrl + '/api/agent/resume', 
@@ -321,7 +321,7 @@ const ChatPopup: React.FC = () => {
                   {message.sender === 'bot' && !message.content.includes("Hi there!") && 
                   !message.content.includes("I can help you with") && !message.content.includes("How can I help you today?") && (
                   !message.content.includes("Welcome to Hendra's Interactive Portfolio Chat") &&
-                  !message.content.includes("Markdown Formatting Examples") && (
+                  !message.content.includes("Markdown Formatting Examples")) && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>
@@ -344,7 +344,6 @@ const ChatPopup: React.FC = () => {
                         <span className="text-xs text-gray-400">Thanks for your feedback!</span>
                       )}
                     </div>
-                  )}
                   )}
                 </div>
               </div>
