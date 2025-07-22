@@ -33,7 +33,7 @@ const SkillsSlideshow: React.FC = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   
-  const { skillImages, config }: { skillImages: SkillImage[], config: SkillsConfig } = skillsImagesData;
+  const { skillImages, configuration: config }: { skillImages: SkillImage[], config: SkillsConfig } = skillsImagesData;
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % skillImages.length);
