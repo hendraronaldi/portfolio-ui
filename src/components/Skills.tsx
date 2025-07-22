@@ -3,11 +3,11 @@ import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import skillsData from '../data/skills.json';
 
 // Import skill images
-import backendImage from '../assets/img/skills-backend.jpg';
-import aiImage from '../assets/img/skills-ai.jpg';
-import dataImage from '../assets/img/skills-data.jpg';
-import cloudImage from '../assets/img/skills-cloud.jpg';
-import leadershipImage from '../assets/img/skills-leadership.jpg';
+import backendImage from '../assets/img/skills-backend.png';
+import aiImage from '../assets/img/skills-ai.png';
+import dataImage from '../assets/img/skills-ai.png';
+import cloudImage from '../assets/img/skills-backend.png';
+import leadershipImage from '../assets/img/skills-soft.png';
 
 const Skills: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

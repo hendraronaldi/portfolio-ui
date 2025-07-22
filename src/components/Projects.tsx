@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause, Briefcase, Eye } from 'lucide-react';
 import projectsData from '../data/projects.json';
-import skillsVizConfig from '../data/skills-viz.json';
 
 const Projects: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
