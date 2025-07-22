@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Paperclip, Image, ThumbsUp, ThumbsDown } from 'lucide-react';
 import axios from 'axios';
-import welcomeData from '../data/welcome-message.json';
-import MarkdownRenderer from './MarkdownRenderer';
+import initialMessages from '../data/chat-messages.json';
 
 // Access the environment variables
 const backendProxyUrl = import.meta.env.VITE_BE_PROXY_URL;
 const apiKey = import.meta.env.VITE_FE_API_KEY;
 
-type MessageType = 'text' | 'image' | 'file' | 'markdown';
+type MessageType = 'text' | 'image' | 'file';
 
 interface Message {
   id: number;
@@ -35,7 +34,6 @@ const ChatPopup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasShownInitialMessages, setHasShownInitialMessages] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<Record<number, boolean>>({});
-  const [currentWelcomeIndex, setCurrentWelcomeIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -49,36 +47,17 @@ const ChatPopup: React.FC = () => {
       setHasShownInitialMessages(true);
       setIsTyping(true);
 
-      // Show welcome messages with staggered timing
-      const showWelcomeMessage = (index: number) => {
-        if (index >= welcomeData.welcomeMessages.length) {
-          setIsTyping(false);
-          return;
-        }
-
+      setTimeout(() => {
+        setMessages([initialMessages[0]]);
+        
         setTimeout(() => {
-          const welcomeMessage = welcomeData.welcomeMessages[index];
-          const message: Message = {
-            id: index + 1,
-            sender: welcomeMessage.sender as 'user' | 'bot',
-            content: welcomeMessage.content,
-            timestamp: welcomeMessage.timestamp,
-            type: welcomeMessage.type as MessageType
-          };
-          
-          setMessages(prev => [...prev, message]);
-          setCurrentWelcomeIndex(index + 1);
-          
-          if (index < welcomeData.welcomeMessages.length - 1) {
-            setIsTyping(true);
-            showWelcomeMessage(index + 1);
-          } else {
+          setIsTyping(true);
+          setTimeout(() => {
+            setMessages(prev => [...prev, initialMessages[1]]);
             setIsTyping(false);
-          }
-        }, index === 0 ? 1000 : 2500); // First message after 1s, subsequent after 2.5s
-      };
-
-      showWelcomeMessage(0);
+          }, 1500);
+        }, 500);
+      }, 1000);
     }
   }, [isOpen, hasShownInitialMessages]);
 
@@ -96,7 +75,7 @@ const ChatPopup: React.FC = () => {
     try {
       setIsTyping(true);
 
-      const payload = {"query": content};
+      const payload = {"query": content}
 
       const response = await axios.post<APIResponse>(
         backendProxyUrl + '/api/agent/resume', 
@@ -124,7 +103,7 @@ const ChatPopup: React.FC = () => {
     if ((!newMessage.trim() && !selectedFile) || isTyping) return;
 
     setError(null);
-    const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : welcomeData.welcomeMessages.length + 1;
+    const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
     
     try {
       if (selectedFile) {
@@ -144,13 +123,9 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + 1,
           sender: 'bot',
-          content: typeof response.message === 'string' 
-            ? response.message 
-            : typeof response.message === 'object' && response.message !== null
-              ? JSON.stringify(response.message, null, 2)
-              : String(response.message || "I received your message! Let me help you with information about Hendra's background and experience."),
+          content: response.message,
           timestamp: formatTimestamp(),
-          type: 'markdown'
+          type: 'text'
         };
         
         setMessages(prev => [...prev, botMessage]);
@@ -173,13 +148,9 @@ const ChatPopup: React.FC = () => {
         const botMessage: Message = {
           id: nextId + (selectedFile ? 3 : 1),
           sender: 'bot',
-          content: typeof response.message === 'string' 
-            ? response.message 
-            : typeof response.message === 'object' && response.message !== null
-              ? JSON.stringify(response.message, null, 2)
-              : String(response.message || "I received your message! Let me help you with information about Hendra's background and experience."),
+          content: response.message,
           timestamp: formatTimestamp(),
-          type: 'markdown',
+          type: 'text',
           previousUserMessage: userMessage
         };
         
@@ -289,25 +260,8 @@ const ChatPopup: React.FC = () => {
                     : 'bg-gray-800 text-white'
                 }`}
               >
-                {(message.type === 'text' || message.type === 'markdown') && (
-                  message.type === 'markdown' ? (
-                    <MarkdownRenderer content={
-                      typeof message.content === 'string' 
-                        ? message.content 
-                        : typeof message.content === 'object' && message.content !== null
-                          ? JSON.stringify(message.content, null, 2)
-                          : String(message.content)
-                    } />
-                  ) : (
-                    <p className="whitespace-pre-wrap">
-                      {typeof message.content === 'string' 
-                        ? message.content 
-                        : typeof message.content === 'object' && message.content !== null
-                          ? JSON.stringify(message.content, null, 2)
-                          : String(message.content)
-                      }
-                    </p>
-                  )
+                {message.type === 'text' && (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
                 )}
                 
                 {message.type === 'image' && (
@@ -337,8 +291,6 @@ const ChatPopup: React.FC = () => {
                   
                   {message.sender === 'bot' && !message.content.includes("Hi there!") && 
                   !message.content.includes("I can help you with") && !message.content.includes("How can I help you today?") && (
-                  !message.content.includes("Welcome to Hendra's Interactive Portfolio Chat") &&
-                  !message.content.includes("Markdown Formatting Examples")) && (
                     <div className="flex space-x-2 ml-4">
                       {!feedbackSubmitted[message.id] ? (
                         <>
