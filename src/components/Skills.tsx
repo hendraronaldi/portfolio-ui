@@ -1,184 +1,419 @@
-'color: 'from-gray-500 to-blue-500 transition
-+        }
-+      }
-+    };
-+
-}
-+
-+    window handlecolor: 'Escape') {
-+        setIsAutoPlaying(false);
-+      }
-+    };
-+
-+    window.addEventListener('keydown', handleKeyPress);
-+  }, []);
-+
-+  return (
-+    <div className="skills-slideshow-container">
-+      <div className="skills-slideshow">
-+        {skillsImages.map((image, index) => (
-+          <div
-+            key={index}
-+            className={`skills-slide ${index === currentSlide ? 'active' : ''}`}
-+          >
-+            <img src={image} alt={`Skill ${index + 1}`} />
-+          </div>
-+        ))}
-+      </div>
-+      <div className="skills-navigation">
-+        <button onClick={prevSlide} className="nav-button">
-+          <ChevronLeft size={20} />
-+        </button>
-+        <button onClick={nextSlide} className="nav-button">
-+          <ChevronRight size={20} />
-+        </button>
-+      </div>
-+    </div>
-+  );
-+};
-+
-+const Skills = () => {
-+  const containerRef = useRef<HTMLDivElement>(null);
-+
-+  return (
-+    <section id="skills" className="py-20 bg-gray-900">
-+      <div className="container mx-auto px-4">
-+        <div className="text-center mb-16">
-+          <h2 className="text-4xl font-bold text-white mb-4">
-+            Technical Skills
-+          </h2>
-+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-+            A comprehensive overview of my technical expertise and the tools I use to build amazing digital experiences.
-+          </p>
-+        </div>
-+
-+        <div ref={containerRef} className="max-w-4xl mx-auto">
-+          <SkillsSlideshow />
-+        </div>
-+      </div>
-+    </section>
-+  );
-+};
-+
-+export default Skills;
-</content>
-</file>
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, ChevronUp, Server, Database, Cloud, Cpu, Network, Users, Target, MessageSquare, GitBranch, Zap } from 'lucide-react';
+import skillsData from '../data/skills.json';
+import skillsVizConfig from '../data/skills-viz.json';
 
-The issue is that the `skillsImages` array is empty, which causes the slideshow to not display any content. Looking at the original file, I can see that the `skillsImages` array should contain actual image paths or URLs for the skills.
+const Skills: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<'backend' | 'data' | 'soft' | 'network'>('backend');
+  const [animationPhase, setAnimationPhase] = useState(0);
 
-Let me fix this by adding proper skill images to the array:
+  // Add ref for skills grid
+  const skillsGridRef = React.useRef<HTMLDivElement>(null);
 
-<file>
-<path>src/components/Skills.tsx</path>
-<content>
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const skillsImages = [
-  '/images/skills/frontend.png',
-  '/images/skills/backend.png',
-  '/images/skills/database.png',
-  '/images/skills/devops.png',
-  '/images/skills/mobile.png'
-];
-
-const SkillsSlideshow = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % skillsImages.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + skillsImages.length) % skillsImages.length);
-  };
-
+  // Animation cycle for data flow
   useEffect(() => {
-    if (!isAutoPlaying || skillsImages.length === 0) return;
-
-    const interval = setInterval(nextSlide, 3000);
+    const interval = setInterval(() => {
+      setAnimationPhase(prev => (prev + 1) % 4);
+    }, 2000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, []);
 
-  // Add keyboard navigation effect
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        setIsAutoPlaying(false);
-        prevSlide();
-      } else if (e.key === 'ArrowRight') {
-        setIsAutoPlaying(false);
-        nextSlide();
-      } else if (e.key === ' ') {
-        e.preventDefault();
-        setIsAutoPlaying(!isAutoPlaying);
-      }
+  // Helper function to get skill position in grid
+  const getSkillPosition = (skillName: string, containerRef: React.RefObject<HTMLDivElement>) => {
+    if (!containerRef.current) return null;
+    
+    const skillElement = containerRef.current.querySelector(`[data-skill="${skillName}"]`) as HTMLElement;
+    if (!skillElement) return null;
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const skillRect = skillElement.getBoundingClientRect();
+    
+    return {
+      x: skillRect.left - containerRect.left + skillRect.width / 2,
+      y: skillRect.top - containerRect.top + skillRect.height / 2
     };
+  };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isAutoPlaying]);
-
-  if (skillsImages.length === 0) {
+  // Render connection lines between skills
+  const renderSkillConnections = (containerRef: React.RefObject<HTMLDivElement>) => {
+    if (!skillsVizConfig.skillConnections?.enabled || !containerRef.current) return null;
+    
+    const connections = skillsVizConfig.skillConnections.connections;
+    
     return (
-      <div className="text-center text-gray-400 py-8">
-        <p>No skills images available</p>
-      </div>
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        style={{ overflow: 'visible' }}
+      >
+        <defs>
+          {connections.map((connection, index) => (
+            <React.Fragment key={`defs-${index}`}>
+              {connection.animation?.enabled && connection.animation.type === 'flow' && (
+                <linearGradient id={`flowGradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="transparent" />
+                  <stop offset="50%" stopColor={connection.style.color} />
+                  <stop offset="100%" stopColor="transparent" />
+                  <animateTransform
+                    attributeName="gradientTransform"
+                    type="translate"
+                    values="-100 0;100 0;-100 0"
+                    dur={`${connection.animation.duration}ms`}
+                    repeatCount="indefinite"
+                  />
+                </linearGradient>
+              )}
+              {connection.style.pattern === 'dashed' && (
+                <pattern id={`dashPattern-${index}`} patternUnits="userSpaceOnUse" width="10" height="2">
+                  <rect width="5" height="2" fill={connection.style.color} />
+                  <rect x="5" width="5" height="2" fill="transparent" />
+                </pattern>
+              )}
+              {connection.style.pattern === 'dotted' && (
+                <pattern id={`dotPattern-${index}`} patternUnits="userSpaceOnUse" width="8" height="2">
+                  <circle cx="2" cy="1" r="1" fill={connection.style.color} />
+                </pattern>
+              )}
+            </React.Fragment>
+          ))}
+        </defs>
+        
+        {connections.map((connection, index) => {
+          const fromPos = getSkillPosition(connection.from, containerRef);
+          const toPos = getSkillPosition(connection.to, containerRef);
+          
+          if (!fromPos || !toPos) return null;
+          
+          const getStroke = () => {
+            if (connection.animation?.enabled && connection.animation.type === 'flow') {
+              return `url(#flowGradient-${index})`;
+            }
+            if (connection.style.pattern === 'dashed') {
+              return `url(#dashPattern-${index})`;
+            }
+            if (connection.style.pattern === 'dotted') {
+              return `url(#dotPattern-${index})`;
+            }
+            return connection.style.color;
+          };
+          
+          return (
+            <g key={`connection-${index}`} className="skill-connection">
+              <line
+                x1={fromPos.x}
+                y1={fromPos.y}
+                x2={toPos.x}
+                y2={toPos.y}
+                stroke={getStroke()}
+                strokeWidth={connection.style.width}
+                opacity={connection.style.opacity}
+                className={`transition-all duration-300 ${
+                  connection.animation?.enabled && connection.animation.type === 'pulse' 
+                    ? 'animate-pulse' 
+                    : ''
+                }`}
+              />
+              
+              {/* Connection hover area for interactivity */}
+              <line
+                x1={fromPos.x}
+                y1={fromPos.y}
+                x2={toPos.x}
+                y2={toPos.y}
+                stroke="transparent"
+                strokeWidth={Math.max(connection.style.width * 3, 10)}
+                className="pointer-events-auto cursor-pointer hover:stroke-white hover:stroke-opacity-20"
+                title={`${connection.from} → ${connection.to} (${skillsVizConfig.skillConnections.connectionTypes[connection.type]?.label})`}
+              />
+            </g>
+          );
+        })}
+      </svg>
     );
-  }
+  };
 
-  return (
-    <div
-      className="skills-slideshow-container"
-      tabIndex={0}
-      onMouseEnter={() => setIsAutoPlaying(false)}
-      onMouseLeave={() => setIsAutoPlaying(true)}
-      onFocus={() => setIsAutoPlaying(false)}
-      onBlur={() => setIsAutoPlaying(true)}
-      ref={(el) => {
-        if (el) el.focus();
-      }}
-    >
-      <div className="skills-slideshow">
-        {skillsImages.map((image, index) => (
-          <div
-            key={index}
-            className={`skills-slide ${index === currentSlide ? 'active' : ''}`}
-          >
-            <img src={image} alt={`Skill ${index + 1}`} />
-          </div>
-        ))}
+  const BackendArchitecture = () => (
+    <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 overflow-hidden">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="grid grid-cols-8 grid-rows-6 h-full w-full">
+          {Array.from({ length: 48 }).map((_, i) => (
+            <div key={i} className="border border-blue-500/20"></div>
+          ))}
+        </div>
       </div>
-      <div className="skills-navigation">
-        <button onClick={prevSlide} className="nav-button">
-          <ChevronLeft size={20} />
-        </button>
-        <button onClick={nextSlide} className="nav-button">
-          <ChevronRight size={20} />
-        </button>
+
+      {/* Central Cloud Platform */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 shadow-lg">
+          <Cloud size={32} className="text-white mx-auto mb-2" />
+          <div className="text-white text-sm font-semibold text-center">AWS Cloud</div>
+          <div className="text-blue-200 text-xs text-center">Microservices Hub</div>
+          
+          {/* Pulsing animation */}
+          <div className="absolute inset-0 bg-blue-400 rounded-lg opacity-20 animate-ping"></div>
+        </div>
+      </div>
+
+      {/* Microservices Containers */}
+      {[
+        { name: 'GraphQL', pos: 'top-20 left-20', color: 'from-pink-500 to-rose-500', icon: Network },
+        { name: 'Go API', pos: 'top-20 right-20', color: 'from-cyan-500 to-blue-500', icon: Zap },
+        { name: 'Python ML', pos: 'bottom-20 left-20', color: 'from-green-500 to-emerald-500', icon: Cpu },
+        { name: 'Ruby Rails', pos: 'bottom-20 right-20', color: 'from-red-500 to-pink-500', icon: Server },
+      ].map((service, index) => (
+        <div key={service.name} className={`absolute ${service.pos}`}>
+          <div className={`bg-gradient-to-r ${service.color} rounded-lg p-3 shadow-lg transform hover:scale-110 transition-all duration-300`}>
+            <service.icon size={24} className="text-white mx-auto mb-1" />
+            <div className="text-white text-xs font-medium text-center">{service.name}</div>
+          </div>
+          
+          {/* Connection lines with animation */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            <line
+              x1="50%"
+              y1="50%"
+              x2="50%"
+              y2="200%"
+              stroke="url(#gradient)"
+              strokeWidth="2"
+              className={`${animationPhase === index ? 'opacity-100' : 'opacity-30'} transition-opacity duration-500`}
+              strokeDasharray="5,5"
+            >
+              <animate attributeName="stroke-dashoffset" values="0;10" dur="1s" repeatCount="indefinite" />
+            </line>
+          </svg>
+        </div>
+      ))}
+
+      {/* Database Clusters */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+        <div className="flex space-x-4">
+          <div className="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg p-3 shadow-lg">
+            <Database size={20} className="text-white mx-auto mb-1" />
+            <div className="text-white text-xs text-center">MySQL</div>
+          </div>
+          <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-lg p-3 shadow-lg">
+            <Database size={20} className="text-white mx-auto mb-1" />
+            <div className="text-white text-xs text-center">MongoDB</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Load Balancer */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg p-3 shadow-lg">
+          <Network size={20} className="text-white mx-auto mb-1" />
+          <div className="text-white text-xs text-center">Load Balancer</div>
+        </div>
+      </div>
+
+      {/* SVG Gradients */}
+      <svg className="absolute inset-0 w-0 h-0">
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#8b5cf6" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+
+  const DataPipeline = () => (
+    <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-6 overflow-hidden">
+      {/* Pipeline Flow */}
+      <div className="flex items-center justify-between h-full">
+        {/* Source Systems */}
+        <div className="flex flex-col space-y-4">
+          <div className="text-center">
+            <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg p-3 mb-2">
+              <Database size={24} className="text-white mx-auto" />
+            </div>
+            <div className="text-white text-xs">Sources</div>
+          </div>
+        </div>
+
+        {/* ETL Process */}
+        <div className="flex flex-col items-center space-y-2">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-3">
+            <Cpu size={24} className="text-white" />
+          </div>
+          <div className="text-white text-xs text-center">Dataflow<br />ETL</div>
+        </div>
+
+        {/* dbt Transformations */}
+        <div className="flex flex-col items-center space-y-2">
+          <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg p-3">
+            <GitBranch size={24} className="text-white" />
+          </div>
+          <div className="text-white text-xs text-center">dbt<br />Transform</div>
+        </div>
+
+        {/* BigQuery */}
+        <div className="flex flex-col items-center space-y-2">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg p-3">
+            <Server size={24} className="text-white" />
+          </div>
+          <div className="text-white text-xs text-center">BigQuery<br />Warehouse</div>
+        </div>
+
+        {/* Outputs */}
+        <div className="flex flex-col space-y-4">
+          <div className="text-center">
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg p-3 mb-2">
+              <Target size={24} className="text-white mx-auto" />
+            </div>
+            <div className="text-white text-xs">Analytics</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Animated Data Flow */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+        <path
+          d="M 80 200 Q 200 200 320 200 Q 440 200 560 200 Q 680 200 800 200"
+          stroke="url(#dataGradient)"
+          strokeWidth="3"
+          fill="none"
+          strokeDasharray="10,5"
+        >
+          <animate attributeName="stroke-dashoffset" values="0;15" dur="2s" repeatCount="indefinite" />
+        </path>
+        <defs>
+          <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="50%" stopColor="#8b5cf6" />
+            <stop offset="100%" stopColor="#06b6d4" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+
+  const SoftSkillsEcosystem = () => (
+    <div className="relative w-full h-96 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 overflow-hidden">
+      {/* Central Collaboration Hub */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="relative bg-gradient-to-r from-green-500 to-emerald-500 rounded-full p-6 shadow-lg">
+          <Users size={32} className="text-white" />
+          <div className="absolute inset-0 bg-green-400 rounded-full opacity-20 animate-pulse"></div>
+        </div>
+        <div className="text-white text-sm font-semibold text-center mt-2">Team Hub</div>
+      </div>
+
+      {/* Surrounding Skills */}
+      {[
+        { name: 'Leadership', pos: 'top-16 left-1/2 transform -translate-x-1/2', icon: Target, color: 'from-purple-500 to-indigo-500' },
+        { name: 'Communication', pos: 'top-1/2 left-16 transform -translate-y-1/2', icon: MessageSquare, color: 'from-blue-500 to-cyan-500' },
+        { name: 'Agile', pos: 'top-1/2 right-16 transform -translate-y-1/2', icon: Zap, color: 'from-orange-500 to-red-500' },
+        { name: 'Remote Work', pos: 'bottom-16 left-1/2 transform -translate-x-1/2', icon: Network, color: 'from-pink-500 to-rose-500' },
+      ].map((skill, index) => (
+        <div key={skill.name} className={`absolute ${skill.pos}`}>
+          <div className={`bg-gradient-to-r ${skill.color} rounded-lg p-4 shadow-lg transform hover:scale-110 transition-all duration-300`}>
+            <skill.icon size={24} className="text-white mx-auto mb-2" />
+            <div className="text-white text-xs font-medium text-center">{skill.name}</div>
+          </div>
+          
+          {/* Connection lines */}
+          <div className={`absolute top-1/2 left-1/2 w-20 h-0.5 bg-gradient-to-r from-transparent via-white to-transparent transform origin-left ${
+            index === 0 ? 'rotate-90' : index === 1 ? 'rotate-0' : index === 2 ? 'rotate-180' : 'rotate-270'
+          } ${animationPhase === index ? 'opacity-100' : 'opacity-30'} transition-opacity duration-500`}></div>
+        </div>
+      ))}
+
+      {/* Orbiting Elements */}
+      <div className="absolute inset-0">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"
+            style={{
+              top: '50%',
+              left: '50%',
+              transform: `translate(-50%, -50%) rotate(${i * 60 + animationPhase * 90}deg) translateX(120px)`,
+              transition: 'transform 2s ease-in-out',
+            }}
+          ></div>
+        ))}
       </div>
     </div>
   );
-};
-
-const Skills = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="skills" className="py-20 bg-gray-900">
+    <section id="skills" className="py-16">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Technical Skills
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            A comprehensive overview of my technical expertise and the tools I use to build amazing digital experiences.
-          </p>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Expertise & Skills</h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        <div ref={containerRef} className="max-w-4xl mx-auto">
-          <SkillsSlideshow />
+        {/* Section Navigation */}
+        <div className="flex justify-center mb-12">
+          <div className="bg-gray-800 rounded-lg p-1 border border-gray-700">
+            {[
+              { key: 'backend', label: 'Backend Architecture', icon: Server },
+              { key: 'data', label: 'Data Pipeline', icon: Database },
+              { key: 'soft', label: 'Soft Skills', icon: Users },
+            ].map((section) => (
+              <button
+                key={section.key}
+                onClick={() => setActiveSection(section.key as any)}
+                className={`flex items-center px-6 py-3 rounded-lg transition-all duration-300 ${
+                  activeSection === section.key
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <section.icon size={20} className="mr-2" />
+                <span className="font-medium">{section.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Dynamic Content */}
+        <div className="mb-12">
+          <div className="transition-all duration-500 ease-in-out">
+            {activeSection === 'backend' && <BackendArchitecture />}
+            {activeSection === 'data' && <DataPipeline />}
+            {activeSection === 'soft' && <SoftSkillsEcosystem />}
+          </div>
+        </div>
+
+        {/* Skills Grid */}
+        <div className="relative">
+          <div 
+            ref={skillsGridRef}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
+          >
+            {skillsData.categories.map((category, index) => (
+              <div 
+                key={index} 
+                data-skill={category.title}
+                className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300"
+              >
+                <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  {category.title}
+                </h3>
+                <div className="space-y-2">
+                  {category.skills.slice(0, 5).map((skill, skillIndex) => (
+                    <div key={skillIndex} className="flex items-center justify-between p-2 bg-gray-900 rounded hover:bg-gray-700 transition-colors">
+                      <span className="text-gray-300 text-sm">{skill.name}</span>
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    </div>
+                  ))}
+                  {category.skills.length > 5 && (
+                    <div className="text-gray-500 text-sm text-center pt-2">
+                      +{category.skills.length - 5} more skills
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Render connection lines */}
+          {renderSkillConnections(skillsGridRef)}
         </div>
       </div>
     </section>
@@ -186,5 +421,3 @@ const Skills = () => {
 };
 
 export default Skills;
-</content>
-</file>
