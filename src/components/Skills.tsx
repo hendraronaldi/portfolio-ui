@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Eye, List, Play, Pause } from 'lucide-react';
-import skillsData from '../data/skills.json';
+import skillsVizConfig from '../data/skills-viz.json';
 import skillsImagesData from '../data/skills-images.json';
 
 interface Skill {
@@ -243,7 +243,11 @@ const SkillsSlideshow: React.FC = () => {
 };
 
 const SkillsList: React.FC = () => {
-  const skills: Skill[] = skillsData.skills;
+  const skills: Skill[] = skillsVizConfig.skillItems.map(item => ({
+    name: item.name,
+    level: item.level,
+    category: item.category
+  }));
   
   const groupedSkills = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
