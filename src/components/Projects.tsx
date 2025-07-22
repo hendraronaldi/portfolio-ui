@@ -9,44 +9,39 @@ const Projects: React.FC = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [slideDirection, setSlideDirection] = useState<'forward' | 'backward'>('forward');
 
   const totalSlides = projectsData.length;
-  const transitionConfig = skillsVizConfig.projectTransitions;
 
   const nextSlide = useCallback(() => {
     if (isTransitioning) return;
-    setSlideDirection('forward');
     setIsTransitioning(true);
     
+    // Fade out, change slide, then fade in
     setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % totalSlides);
-      setTimeout(() => setIsTransitioning(false), transitionConfig.duration);
-    }, 50);
-  }, [totalSlides, isTransitioning, transitionConfig.duration]);
+      setTimeout(() => setIsTransitioning(false), 300);
+    }, 150);
+  }, [totalSlides, isTransitioning]);
 
   const prevSlide = useCallback(() => {
     if (isTransitioning) return;
-    setSlideDirection('backward');
     setIsTransitioning(true);
     
     setTimeout(() => {
       setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-      setTimeout(() => setIsTransitioning(false), transitionConfig.duration);
-    }, 50);
-  }, [totalSlides, isTransitioning, transitionConfig.duration]);
+      setTimeout(() => setIsTransitioning(false), 300);
+    }, 150);
+  }, [totalSlides, isTransitioning]);
 
   const goToSlide = (index: number) => {
     if (isTransitioning || index === currentSlide) return;
     
-    const direction = index > currentSlide ? 'forward' : 'backward';
-    setSlideDirection(direction);
     setIsTransitioning(true);
     
     setTimeout(() => {
       setCurrentSlide(index);
-      setTimeout(() => setIsTransitioning(false), transitionConfig.duration);
-    }, 50);
+      setTimeout(() => setIsTransitioning(false), 300);
+    }, 150);
   };
 
   // Auto-play functionality
@@ -127,50 +122,6 @@ const Projects: React.FC = () => {
 
   const currentProject = projectsData[currentSlide];
   const { prev: prevProject, next: nextProject } = getAdjacentProjects();
-
-  // Get transition styles based on configuration
-  const getTransitionStyles = () => {
-    const baseStyles = {
-      transition: `transform ${transitionConfig.duration}ms ${transitionConfig.easing}, opacity ${transitionConfig.duration}ms ${transitionConfig.easing}`,
-    };
-
-    if (isTransitioning) {
-      const direction = slideDirection === 'forward' ? transitionConfig.direction.forward : transitionConfig.direction.backward;
-      return {
-        ...baseStyles,
-        transform: direction,
-        opacity: transitionConfig.stages.exit.opacity,
-      };
-    }
-
-    return {
-      ...baseStyles,
-      transform: 'translateX(0%)',
-      opacity: 1,
-    };
-  };
-
-  // Accessibility announcement
-  useEffect(() => {
-    if (transitionConfig.accessibility.announcements.enabled) {
-      const announcement = transitionConfig.accessibility.announcements.template
-        .replace('{current}', (currentSlide + 1).toString())
-        .replace('{total}', totalSlides.toString())
-        .replace('{title}', currentProject.title);
-      
-      // Create a live region for screen readers
-      const liveRegion = document.createElement('div');
-      liveRegion.setAttribute('aria-live', 'polite');
-      liveRegion.setAttribute('aria-atomic', 'true');
-      liveRegion.className = 'sr-only';
-      liveRegion.textContent = announcement;
-      document.body.appendChild(liveRegion);
-      
-      setTimeout(() => {
-        document.body.removeChild(liveRegion);
-      }, 1000);
-    }
-  }, [currentSlide, currentProject.title, totalSlides, transitionConfig.accessibility.announcements]);
 
   return (
     <section id="projects" className="py-16 bg-gray-800">
@@ -260,7 +211,11 @@ const Projects: React.FC = () => {
             {/* Project content with horizontal slide transition */}
             <div 
               className="flex flex-col lg:flex-row min-h-[500px]"
-              style={getTransitionStyles()}
+              style={{
+                transition: 'opacity 300ms ease-in-out, transform 300ms ease-in-out',
+                opacity: isTransitioning ? 0.3 : 1,
+                transform: isTransitioning ? 'scale(0.98)' : 'scale(1)',
+              }}
             >
               {/* Project image */}
               <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden group">
@@ -451,28 +406,6 @@ const Projects: React.FC = () => {
           <p>Use ← → arrow keys to navigate • Space to pause/play • Hover to pause • Click thumbnails to jump</p>
         </div>
       </div>
-
-      <style jsx>{`
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border: 0;
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };
