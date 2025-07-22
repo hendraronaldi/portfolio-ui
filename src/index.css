@@ -329,6 +329,129 @@
   outline-offset: 2px;
 }
 
+/* Skills Slideshow Styles */
+.skills-slideshow-container {
+  position: relative;
+}
+
+.skills-slideshow-container img {
+  transition: transform 0.7s ease-in-out;
+}
+
+.skills-slideshow-container:hover img {
+  transform: scale(1.05);
+}
+
+/* Smooth transitions for mode switching */
+.skills-section-content {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Slideshow navigation animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+.slide-enter {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.slide-exit {
+  animation: slideOut 0.5s ease-out forwards;
+}
+
+/* Responsive adjustments for slideshow */
+@media (max-width: 768px) {
+  .skills-slideshow-container {
+    margin: 0 -1rem;
+  }
+  
+  .skills-slideshow-container .absolute.bottom-4 {
+    bottom: 2rem;
+  }
+  
+  .skills-slideshow-container .absolute.p-8 {
+    padding: 1.5rem;
+  }
+  
+  .skills-slideshow-container h3 {
+    font-size: 1.5rem;
+  }
+  
+  .skills-slideshow-container p {
+    font-size: 1rem;
+  }
+}
+
+/* Thumbnail navigation styles */
+.skills-thumbnails {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 #1f2937;
+}
+
+.skills-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.skills-thumbnails::-webkit-scrollbar-track {
+  background: #1f2937;
+  border-radius: 2px;
+}
+
+.skills-thumbnails::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 2px;
+}
+
+.skills-thumbnails::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Loading states for images */
+.skills-slideshow-container img[loading="lazy"] {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Enhanced hover effects */
+.skills-slideshow-container .technology-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+/* Smooth category badge animations */
+.category-badge {
+  transition: all 0.3s ease;
+}
+
+.category-badge:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
 /* Markdown Content Styling */
 .markdown-content {
   line-height: 1.6;
