@@ -8,6 +8,9 @@ const Skills: React.FC = () => {
   const [showImagePopup, setShowImagePopup] = useState(false);
   const [popupImage, setPopupImage] = useState<string>('');
   const [popupTitle, setPopupTitle] = useState<string>('');
+  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [popupImage, setPopupImage] = useState<string>('');
+  const [popupTitle, setPopupTitle] = useState<string>('');
 
   // Create skill slides with images
   const skillSlides = [
@@ -73,9 +76,26 @@ const Skills: React.FC = () => {
     return () => clearInterval(interval);
   }, [isAutoPlaying, currentSlide]);
 
+  const openImagePopup = (image: string, title: string) => {
+    setPopupImage(image);
+    setPopupTitle(title);
+    setShowImagePopup(true);
+    setIsAutoPlaying(false);
+  };
+
+  const closeImagePopup = () => {
+    setShowImagePopup(false);
+    setPopupImage('');
+    setPopupTitle('');
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      if (showImagePopup && e.key === 'Escape') {
+        closeImagePopup();
+        return;
+      }
       if (showImagePopup && e.key === 'Escape') {
         closeImagePopup();
         return;
@@ -93,6 +113,19 @@ const Skills: React.FC = () => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isAutoPlaying, showImagePopup]);
+
+  // Handle escape key and body scroll for popup
+  useEffect(() => {
+    if (showImagePopup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showImagePopup]);
 
   const openImagePopup = (image: string, title: string) => {
     setPopupImage(image);
@@ -160,6 +193,7 @@ const Skills: React.FC = () => {
                   src={currentSkillSlide.image}
                   alt={currentSkillSlide.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  onClick={() => openImagePopup(currentSkillSlide.image, currentSkillSlide.title)}
                   onClick={() => openImagePopup(currentSkillSlide.image, currentSkillSlide.title)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -310,6 +344,32 @@ const Skills: React.FC = () => {
           <p>Use ← → arrow keys to navigate • Space to pause/play • Hover to pause</p>
         </div>
       </div>
+
+      {/* Image Popup */}
+      {showImagePopup && (
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+          onClick={closeImagePopup}
+        >
+          <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+            <img
+              src={popupImage}
+              alt={popupTitle}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={closeImagePopup}
+              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+            >
+              <X size={24} />
+            </button>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
+              <h3 className="text-white font-semibold text-center">{popupTitle}</h3>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Image Popup */}
       {showImagePopup && (
