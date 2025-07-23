@@ -39,6 +39,10 @@ const Projects: React.FC = () => {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      if (showMediaPopup && e.key === 'Escape') {
+        closeMediaPopup();
+        return;
+      }
       if (e.key === 'ArrowLeft') {
         prevSlide();
       } else if (e.key === 'ArrowRight') {
@@ -51,7 +55,7 @@ const Projects: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [nextSlide, prevSlide, isAutoPlaying]);
+  }, [nextSlide, prevSlide, isAutoPlaying, showMediaPopup]);
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -88,23 +92,15 @@ const Projects: React.FC = () => {
     setPopupMedia({ src: '', type: 'image', title: '' });
   };
 
-  // Handle escape key for popup
+  // Handle escape key and body scroll for popup
   useEffect(() => {
-    const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showMediaPopup) {
-        closeMediaPopup();
-      }
-    };
-
     if (showMediaPopup) {
-      document.addEventListener('keydown', handleEscapeKey);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
       document.body.style.overflow = 'unset';
     };
   }, [showMediaPopup]);
@@ -231,7 +227,11 @@ const Projects: React.FC = () => {
                   src={currentProject.image}
                   alt={currentProject.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  onClick={() => openMediaPopup(currentProject.image, 'image', currentProject.title)}
+                  onClick={() => openMediaPopup(
+                    currentProject.video || currentProject.image, 
+                    currentProject.video ? 'video' : 'image', 
+                    currentProject.title
+                  )}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 
@@ -423,13 +423,17 @@ const Projects: React.FC = () => {
 
       {/* Media Popup */}
       {showMediaPopup && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+          onClick={closeMediaPopup}
+        >
           <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
             {popupMedia.type === 'image' ? (
               <img
                 src={popupMedia.src}
                 alt={popupMedia.title}
                 className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
               />
             ) : (
               <video
@@ -437,6 +441,7 @@ const Projects: React.FC = () => {
                 controls
                 autoPlay
                 className="max-w-full max-h-full rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
               >
                 Your browser does not support the video tag.
               </video>
