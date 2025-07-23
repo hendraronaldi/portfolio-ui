@@ -15,9 +15,6 @@ const Skills: React.FC = () => {
   const [showImagePopup, setShowImagePopup] = useState(false);
   const [popupImage, setPopupImage] = useState<string>('');
   const [popupTitle, setPopupTitle] = useState<string>('');
-  const [showImagePopup, setShowImagePopup] = useState(false);
-  const [popupImage, setPopupImage] = useState<string>('');
-  const [popupTitle, setPopupTitle] = useState<string>('');
 
   // Create skill slides with images
   const skillSlides = [
