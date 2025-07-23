@@ -2,13 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause, X, ZoomIn, PlayCircle } from 'lucide-react';
 import skillsData from '../data/skills.json';
 
-// Import skill images
-import backendImage from '../assets/img/skills-backend.jpg';
-import aiImage from '../assets/img/skills-ai.jpg';
-import dataImage from '../assets/img/skills-data.jpg';
-import cloudImage from '../assets/img/skills-cloud.jpg';
-import leadershipImage from '../assets/img/skills-leadership.jpg';
-
 const Skills: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -21,35 +14,35 @@ const Skills: React.FC = () => {
     {
       title: "Backend Development",
       description: "Building scalable microservices with Go, Python, and modern architectures",
-      image: backendImage,
+      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       skills: ["Go/Golang", "Python", "Microservices", "gRPC", "GraphQL"],
       color: "from-blue-600 to-purple-600"
     },
     {
       title: "AI & Machine Learning",
       description: "Developing intelligent systems with TensorFlow and deep learning",
-      image: aiImage,
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       skills: ["TensorFlow", "Deep Learning", "Computer Vision", "Object Detection", "Model Building"],
       color: "from-green-600 to-blue-600"
     },
     {
       title: "Data Engineering",
       description: "Creating robust data pipelines and analytics solutions",
-      image: dataImage,
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       skills: ["Data Pipelines", "BigQuery", "Data Analysis", "ETL", "Analytics"],
       color: "from-purple-600 to-pink-600"
     },
     {
       title: "Cloud & DevOps",
       description: "Deploying and scaling applications on modern cloud platforms",
-      image: cloudImage,
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       skills: ["AWS", "Docker", "Microservices", "Cloud Architecture", "DevOps"],
       color: "from-orange-600 to-red-600"
     },
     {
       title: "Leadership & Collaboration",
       description: "Leading remote teams and driving agile development practices",
-      image: leadershipImage,
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       skills: ["Team Leadership", "Agile Methodologies", "Remote Teamwork", "Communication", "Project Management"],
       color: "from-indigo-600 to-purple-600"
     }
