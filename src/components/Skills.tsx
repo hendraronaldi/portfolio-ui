@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause, X, ZoomIn } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import skillsData from '../data/skills.json';
 
 // Import skill images
@@ -12,9 +12,6 @@ import leadershipImage from '../assets/img/skills-soft.png';
 const Skills: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [showImagePopup, setShowImagePopup] = useState(false);
-  const [popupImage, setPopupImage] = useState<string>('');
-  const [popupTitle, setPopupTitle] = useState<string>('');
 
   // Create skill slides with images
   const skillSlides = [
@@ -97,40 +94,6 @@ const Skills: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isAutoPlaying]);
 
-  const openImagePopup = (image: string, title: string) => {
-    setPopupImage(image);
-    setPopupTitle(title);
-    setShowImagePopup(true);
-    setIsAutoPlaying(false);
-  };
-
-  const closeImagePopup = () => {
-    setShowImagePopup(false);
-    setPopupImage('');
-    setPopupTitle('');
-  };
-
-  // Handle escape key for popup
-  useEffect(() => {
-    const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showImagePopup) {
-        closeImagePopup();
-      }
-    };
-
-    if (showImagePopup) {
-      document.addEventListener('keydown', handleEscapeKey);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
-      document.body.style.overflow = 'unset';
-    };
-  }, [showImagePopup]);
-
   const currentSkillSlide = skillSlides[currentSlide];
 
   return (
@@ -154,21 +117,13 @@ const Skills: React.FC = () => {
             {/* Slide content */}
             <div className="flex flex-col lg:flex-row min-h-[500px]">
               {/* Skill image */}
-              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden group cursor-pointer">
+              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden group">
                 <img
                   src={currentSkillSlide.image}
                   alt={currentSkillSlide.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  onClick={() => openImagePopup(currentSkillSlide.image, currentSkillSlide.title)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                
-                {/* Zoom indicator */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-black/60 backdrop-blur-sm rounded-full p-3">
-                    <ZoomIn size={24} className="text-white" />
-                  </div>
-                </div>
                 
                 {/* Slide indicator overlay */}
                 <div className="absolute top-4 right-4">
@@ -309,28 +264,6 @@ const Skills: React.FC = () => {
           <p>Use ← → arrow keys to navigate • Space to pause/play • Hover to pause</p>
         </div>
       </div>
-
-      {/* Image Popup */}
-      {showImagePopup && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-          <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
-            <img
-              src={popupImage}
-              alt={popupTitle}
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-            />
-            <button
-              onClick={closeImagePopup}
-              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
-            >
-              <X size={24} />
-            </button>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
-              <h3 className="text-white font-semibold text-center">{popupTitle}</h3>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
