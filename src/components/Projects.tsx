@@ -36,6 +36,30 @@ const Projects: React.FC = () => {
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
 
+  const openMediaPopup = (src: string, type: 'image' | 'video', title: string) => {
+    setPopupMedia({ src, type, title });
+    setShowMediaPopup(true);
+    setIsAutoPlaying(false);
+  };
+
+  const closeMediaPopup = () => {
+    setShowMediaPopup(false);
+    setPopupMedia({ src: '', type: 'image', title: '' });
+  };
+
+  // Handle escape key and body scroll for popup
+  useEffect(() => {
+    if (showMediaPopup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMediaPopup]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -80,30 +104,6 @@ const Projects: React.FC = () => {
       prevSlide();
     }
   };
-
-  const openMediaPopup = (src: string, type: 'image' | 'video', title: string) => {
-    setPopupMedia({ src, type, title });
-    setShowMediaPopup(true);
-    setIsAutoPlaying(false);
-  };
-
-  const closeMediaPopup = () => {
-    setShowMediaPopup(false);
-    setPopupMedia({ src: '', type: 'image', title: '' });
-  };
-
-  // Handle escape key and body scroll for popup
-  useEffect(() => {
-    if (showMediaPopup) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showMediaPopup]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
