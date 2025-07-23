@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause, Briefcase, Eye } from 'lucide-react';
+import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause, Briefcase, Eye, X, ZoomIn, PlayCircle } from 'lucide-react';
 import projectsData from '../data/projects.json';
 
 const Projects: React.FC = () => {
@@ -7,40 +7,22 @@ const Projects: React.FC = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showMediaPopup, setShowMediaPopup] = useState(false);
+  const [popupMedia, setPopupMedia] = useState<{ src: string; type: 'image' | 'video'; title: string }>({ src: '', type: 'image', title: '' });
 
   const totalSlides = projectsData.length;
 
   const nextSlide = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    
-    // Fade out, change slide, then fade in
-    setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
-      setTimeout(() => setIsTransitioning(false), 300);
-    }, 150);
-  }, [totalSlides, isTransitioning]);
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
   const prevSlide = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-      setTimeout(() => setIsTransitioning(false), 300);
-    }, 150);
-  }, [totalSlides, isTransitioning]);
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
 
   const goToSlide = (index: number) => {
-    if (isTransitioning || index === currentSlide) return;
-    
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      setCurrentSlide(index);
-      setTimeout(() => setIsTransitioning(false), 300);
-    }, 150);
+    if (index === currentSlide) return;
+    setCurrentSlide(index);
   };
 
   // Auto-play functionality
@@ -94,6 +76,38 @@ const Projects: React.FC = () => {
       prevSlide();
     }
   };
+
+  const openMediaPopup = (src: string, type: 'image' | 'video', title: string) => {
+    setPopupMedia({ src, type, title });
+    setShowMediaPopup(true);
+    setIsAutoPlaying(false);
+  };
+
+  const closeMediaPopup = () => {
+    setShowMediaPopup(false);
+    setPopupMedia({ src: '', type: 'image', title: '' });
+  };
+
+  // Handle escape key for popup
+  useEffect(() => {
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showMediaPopup) {
+        closeMediaPopup();
+      }
+    };
+
+    if (showMediaPopup) {
+      document.addEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMediaPopup]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -210,20 +224,23 @@ const Projects: React.FC = () => {
             {/* Project content with horizontal slide transition */}
             <div 
               className="flex flex-col lg:flex-row min-h-[500px]"
-              style={{
-                transition: 'opacity 300ms ease-in-out, transform 300ms ease-in-out',
-                opacity: isTransitioning ? 0.3 : 1,
-                transform: isTransitioning ? 'scale(0.98)' : 'scale(1)',
-              }}
             >
               {/* Project image */}
-              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden group">
+              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden group cursor-pointer">
                 <img
                   src={currentProject.image}
                   alt={currentProject.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  onClick={() => openMediaPopup(currentProject.image, 'image', currentProject.title)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                
+                {/* Zoom indicator */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-full p-3">
+                    {currentProject.video ? <PlayCircle size={24} className="text-white" /> : <ZoomIn size={24} className="text-white" />}
+                  </div>
+                </div>
                 
                 {/* Image overlay with project type */}
                 <div className="absolute top-4 left-4">
@@ -332,8 +349,7 @@ const Projects: React.FC = () => {
             {/* Navigation arrows */}
             <button
               onClick={prevSlide}
-              disabled={isTransitioning}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm"
               aria-label="Previous project"
             >
               <ChevronLeft size={24} />
@@ -341,8 +357,7 @@ const Projects: React.FC = () => {
             
             <button
               onClick={nextSlide}
-              disabled={isTransitioning}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm"
               aria-label="Next project"
             >
               <ChevronRight size={24} />
@@ -405,6 +420,39 @@ const Projects: React.FC = () => {
           <p>Use ← → arrow keys to navigate • Space to pause/play • Hover to pause • Click thumbnails to jump</p>
         </div>
       </div>
+
+      {/* Media Popup */}
+      {showMediaPopup && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+          <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+            {popupMedia.type === 'image' ? (
+              <img
+                src={popupMedia.src}
+                alt={popupMedia.title}
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              />
+            ) : (
+              <video
+                src={popupMedia.src}
+                controls
+                autoPlay
+                className="max-w-full max-h-full rounded-lg shadow-2xl"
+              >
+                Your browser does not support the video tag.
+              </video>
+            )}
+            <button
+              onClick={closeMediaPopup}
+              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+            >
+              <X size={24} />
+            </button>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
+              <h3 className="text-white font-semibold text-center">{popupMedia.title}</h3>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
