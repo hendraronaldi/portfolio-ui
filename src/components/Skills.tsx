@@ -148,19 +148,6 @@ const Skills: React.FC = () => {
       }
     };
 
-    if (showImagePopup) {
-      document.addEventListener('keydown', handleEscapeKey);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
-      document.body.style.overflow = 'unset';
-    };
-  }, [showImagePopup]);
-
   const currentSkillSlide = skillSlides[currentSlide];
 
   return (
