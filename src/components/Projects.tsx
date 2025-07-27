@@ -1,6 +1,287 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause, Briefcase, Eye } from 'lucide-react';
-import projectsData from '../data/projects.json';
+import faceRecognitionImage from '../assets/img/projects/face_recognition.png';
+import personDetectionImage from '../assets/img/projects/person_detection.png';
+import selfDrivingCarImage from '../assets/img/projects/self_driving_car.png';
+import coralLifeFormsImage from '../assets/img/projects/coral_life_forms.png';
+
+const projectsData = [
+  {
+    "title": "AI Agent Chatbot",
+    "description": "Developed an AI agent chatbot utilizing LLM RAG system to provide knowledgeable responses, showcasing expertise in AI engineering, RAG, vector databases, and data pipelines. Project is currently on hold due to business reasons related to target market and user interface suitability.",
+    "image": "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?q=80&w=1596&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["AI Engineering", "LLM", "RAG", "Vector Databases", "Data Pipelines", "BigQuery", "Dataflow", "dbt"],
+    "technicalDetails": [
+      "Implemented RAG architecture for enhanced chatbot responses",
+      "Utilized LLMs for natural language understanding and generation",
+      "Integrated vector database for efficient retrieval of relevant information",
+      "Developed data pipelines for knowledge base integration"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Jan 2025 - Present",
+    "type": "work",
+    "status": "In Progress"
+  },
+  {
+    "title": "Reporting & Analytics Data Pipeline",
+    "description": "Developed and optimized data pipelines for analytics and reporting, leveraging BigQuery and data warehouses. Focused on pre-aggregation techniques to improve reporting system performance and resolve timeout issues. Project was put on hold due to business reasons, with some efforts re-focused on reporting features.",
+    "image": "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Data Engineering", "Data Pipelines (ELT)", "BigQuery", "Data Warehouses", "Pre-aggregation Techniques", "SQL", "MongoDB", "dbt", "Apache Superset"],
+    "technicalDetails": [
+      "Developed ELT data pipelines for analytics and reporting",
+      "Utilized BigQuery for data warehousing",
+      "Implemented pre-aggregation techniques to optimize query performance",
+      "Optimized reporting system load times to under five seconds",
+      "Resolved request timeout issues in reporting system"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Jan 2024 - Present",
+    "type": "work",
+    "status": "In Progress"
+  },
+  {
+    "title": "Text Matching Master Courier",
+    "description": "Implemented a rule-based text matching system to improve master courier data using Python for enhanced matching accuracy.",
+    "image": "https://images.unsplash.com/photo-1704969724000-154d4fb94344?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Python", "Data Preprocessing", "Text Matching"],
+    "technicalDetails": [
+      "Developed a text matching system to enhance master courier data",
+      "Focused on data cleaning and preprocessing for accuracy",
+      "Applied feature engineering techniques for improved matching"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Jan 2024 - Present",
+    "type": "work",
+    "status": "Done"
+  },
+  {
+    "title": "Item Domain System Improvement",
+    "description": "Led a small backend development team working in a cross-division team to design and develop a new improved item domain system, decreasing database complexity from more than 10 relations to only 4 relations.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Go", "MySQL", "MongoDB", "Microservices", "gRPC", "graphQL", "Agile Development"],
+    "technicalDetails": [
+      "Designed a new item domain system architecture",
+      "Reduced database complexity by simplifying relations",
+      "Implemented gRPC for efficient inter-service communication",
+      "Optimized MySQL queries for better performance",
+      "Led team in Agile development practices"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Nov 2021 - Jan 2024",
+    "type": "work",
+    "status": "Done"
+  },
+  {
+    "title": "Machine Learning, Deep Learning Application Projects",
+    "description": "Developed various machine learning and deep learning applications, showcasing proficiency in model development, training, and deployment.",
+    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Machine Learning", "Deep Learning", "Model Development", "Model Training", "Model Deployment", "AI Engineering"],
+    "technicalDetails": [
+      "Developed diverse ML and DL applications",
+      "Demonstrated proficiency in model lifecycle (development, training, deployment)"
+    ],
+    "period": "Feb 2024",
+    "type": "personal",
+    "status": "In Progress"
+  },
+  {
+    "title": "Coral Life Forms Detection",
+    "description": "Built a deep learning model using TensorFlow and Keras for detecting coral life forms from underwater imagery, achieving high accuracy in classification.",
+    "image": coralLifeFormsImage,
+    "technologies": ["Deep Learning", "TensorFlow", "Keras", "Computer Vision", "Classification", "AI Engineering"],
+    "technicalDetails": [
+      "Built a deep learning model for coral detection",
+      "Utilized TensorFlow and Keras",
+      "Achieved high accuracy in classification from underwater imagery"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Final%20Project",
+    "period": "Feb 2024",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "Object Segmentation Self Driving Car",
+    "description": "Implemented object segmentation for self-driving cars using deep learning techniques, contributing to enhanced environmental perception and safety.",
+    "image": selfDrivingCarImage,
+    "technologies": ["Deep Learning", "Object Segmentation", "Computer Vision", "Self-Driving Cars", "AI Engineering"],
+    "technicalDetails": [
+      "Implemented object segmentation for self-driving cars",
+      "Utilized deep learning techniques",
+      "Enhanced environmental perception and safety"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Project%203%20Self%20Driving%20Car",
+    "period": "Feb 2024",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "Person Detection",
+    "description": "Developed a real-time person detection system using computer vision and deep learning, optimized for performance and accuracy in various environments.",
+    "image": personDetectionImage,
+    "technologies": ["Computer Vision", "Deep Learning", "Real-time Systems", "Object Detection", "AI Engineering"],
+    "technicalDetails": [
+      "Developed a real-time person detection system",
+      "Optimized for performance and accuracy",
+      "Applied computer vision and deep learning techniques"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Project%202%20Person%20Detection",
+    "period": "Feb 2024",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "Face Recognition Gender Classification",
+    "description": "Created a face recognition and gender classification system using deep learning, demonstrating skills in facial analysis and model deployment.",
+    "image": faceRecognitionImage,
+    "technologies": ["Deep Learning", "Face Recognition", "Gender Classification", "Computer Vision", "Model Deployment", "AI Engineering"],
+    "technicalDetails": [
+      "Created a face recognition and gender classification system",
+      "Utilized deep learning for facial analysis",
+      "Demonstrated skills in model deployment"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Project%201%20Face%20Recognition",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "Diabetes Disease Prediction",
+    "description": "Developed a machine learning model to predict diabetes disease, focusing on data preprocessing, feature selection, and model evaluation for accurate predictions.",
+    "image": "https://images.unsplash.com/photo-1576169210859-6796c4b93c32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Machine Learning", "Data Preprocessing", "Feature Selection", "Model Evaluation", "Data Science"],
+    "technicalDetails": [
+      "Developed an ML model for diabetes prediction",
+      "Focused on data preprocessing and feature selection",
+      "Ensured accurate predictions through model evaluation"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Weekly%20Assignment%202",
+    "period": "Aug 2021",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "House Pricing Prediction",
+    "description": "Built a machine learning model to predict house prices based on various features, demonstrating expertise in regression analysis and model optimization.",
+    "image": "https://images.unsplash.com/photo-1724304406928-c43b01912fa1?q=80&w=2231&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Machine Learning", "Regression Analysis", "Model Optimization", "Data Science"],
+    "technicalDetails": [
+      "Built an ML model for house price prediction",
+      "Utilized various features for prediction",
+      "Demonstrated expertise in regression analysis and model optimization"
+    ],
+    "companyName": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Bootcamp%20Computer%20Vision%20Indonesia%20AI%20Batch%203/Weekly%20Assignment%201",
+    "period": "Aug 2021",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "Import Item",
+    "description": "Developed and maintained APIs for importing item data, ensuring data integrity and efficient processing.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Backend Development", "Microservices", "Go", "Ruby", "NodeJS", "RabbitMQ", "MongoDB", "MySQL"],
+    "technicalDetails": [
+      "Developed and maintained APIs for item data import",
+      "Ensured data integrity and efficient processing"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Feb 2021 - Present",
+    "type": "work",
+    "status": "Done"
+  },
+  {
+    "title": "Import Webhook Order",
+    "description": "Implemented webhook-based order import functionalities, ensuring real-time data synchronization and reliability.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Webhooks", "Backend Development", "Microservices", "Go", "Ruby", "RabbitMQ", "MongoDB", "MySQL"],
+    "technicalDetails": [
+      "Implemented webhook-based order import",
+      "Ensured real-time data synchronization and reliability"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Feb 2021 - Present",
+    "type": "work",
+    "status": "Done"
+  },
+  {
+    "title": "Import Master Data",
+    "description": "Created robust APIs for importing master data, focusing on data validation and seamless integration with existing systems.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Backend Development", "Microservices", "Go", "Ruby", "NodeJS", "RabbitMQ", "MongoDB", "MySQL"],
+    "technicalDetails": [
+      "Created robust APIs for master data import",
+      "Focused on data validation and seamless integration"
+    ],
+    "companyName": "PT Forstok Teknologi Indonesia",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Feb 2021 - Present",
+    "type": "work",
+    "status": "Done"
+  },
+  {
+    "title": "Hotel Cancellation Prediction",
+    "description": "Developed a machine learning model to predict hotel cancellations, optimizing prediction accuracy and providing actionable insights for revenue management.",
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Machine Learning", "Data Science"],
+    "technicalDetails": [
+      "Developed an ML model for hotel cancellation prediction",
+      "Optimized prediction accuracy",
+      "Provided actionable insights for revenue management"
+    ],
+    "companyName": "Shift Academy",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Shift%20Academy%20DS%20Bootcamp%20Batch%209",
+    "period": "Mar 2021",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
+    "title": "BRI Data Hackathon",
+    "description": "Participated in the BRI Data Hackathon, competing in two sub-competitions: People Analytics and Cash Ratio Optimization, demonstrating data analysis and problem-solving skills.",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "technologies": ["Data Analysis", "Problem Solving", "Data Science"],
+    "technicalDetails": [
+      "Competed in People Analytics sub-competition",
+      "Competed in Cash Ratio Optimization sub-competition",
+      "Demonstrated data analysis and problem-solving skills"
+    ],
+    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Competitions/BRI%20Data%20Hackathon%202021",
+    "period": "Mar 2021 - Mar 2021",
+    "type": "personal",
+    "status": "Done"
+  },
+  {
+    "title": "Chatbot",
+    "description": "Developed chatbots integrated with third-party chat platforms based on user requirements.",
+    "image": "https://images.unsplash.com/photo-1611606063065-ee7946f0787a?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "technologies": ["Chatbot Development", "Go", "Rivescript"],
+    "technicalDetails": [
+      "Developed chatbots based on user requirements",
+      "Integrated with third-party chat platforms"
+    ],
+    "companyName": "Talkabot.id",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Jan 2018 - Dec 2018",
+    "type": "work",
+    "status": "Done"
+  }
+];
+
 
 const Projects: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

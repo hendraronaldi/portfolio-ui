@@ -3,11 +3,8 @@ import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import skillsData from '../data/skills.json';
 
 // Import skill images
-import backendImage from '../assets/img/skills-backend.png';
-import aiImage from '../assets/img/skills-ai.png';
-import dataImage from '../assets/img/skills-ai.png';
-import cloudImage from '../assets/img/skills-backend.png';
-import leadershipImage from '../assets/img/skills-soft.png';
+import backendImage from '../assets/img/skills/skills-backend.png';
+import dataImage from '../assets/img/skills/skills-ai.png';
 
 const Skills: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -25,7 +22,7 @@ const Skills: React.FC = () => {
     {
       title: "AI & Machine Learning",
       description: "Developing intelligent systems with TensorFlow and deep learning",
-      image: aiImage,
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       skills: ["TensorFlow", "Deep Learning", "Computer Vision", "Object Detection", "Model Building"],
       color: "from-green-600 to-blue-600"
     },
@@ -39,14 +36,14 @@ const Skills: React.FC = () => {
     {
       title: "Cloud & DevOps",
       description: "Deploying and scaling applications on modern cloud platforms",
-      image: cloudImage,
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       skills: ["AWS", "Docker", "Microservices", "Cloud Architecture", "DevOps"],
       color: "from-orange-600 to-red-600"
     },
     {
       title: "Leadership & Collaboration",
       description: "Leading remote teams and driving agile development practices",
-      image: leadershipImage,
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       skills: ["Team Leadership", "Agile Methodologies", "Remote Teamwork", "Communication", "Project Management"],
       color: "from-indigo-600 to-purple-600"
     }
