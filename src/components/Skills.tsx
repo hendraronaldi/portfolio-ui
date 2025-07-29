@@ -27,9 +27,9 @@ const Skills: React.FC = () => {
       color: "from-green-600 to-blue-600"
     },
     {
-      title: "Data Engineering",
+      title: "Data Engineering & Analytics",
       description: "Creating robust data pipelines and analytics solutions",
-      image: dataImage,
+      image: "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       skills: ["Data Pipelines", "BigQuery", "Data Analysis", "ETL", "Analytics"],
       color: "from-purple-600 to-pink-600"
     },

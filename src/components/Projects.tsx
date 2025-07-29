@@ -5,11 +5,18 @@ import personDetectionImage from '../assets/img/projects/person_detection.png';
 import selfDrivingCarImage from '../assets/img/projects/self_driving_car.png';
 import coralLifeFormsImage from '../assets/img/projects/coral_life_forms.png';
 
+import forstokAnalyticsImage from '../assets/img/projects/forstok_analytics.avif';
+import forstokChatImage from '../assets/img/projects/forstok_chat.avif';
+import forstokListingsImage from '../assets/img/projects/forstok_listings.png';
+import forstokDashboardImage from '../assets/img/projects/forstok_dashboard.avif';
+import forstokOrdersImage from '../assets/img/projects/forstok_orders.png';
+import forstokImage from '../assets/img/projects/forstok.png';
+
 const projectsData = [
   {
     "title": "AI Agent Chatbot",
-    "description": "Developed an AI agent chatbot utilizing LLM RAG system to provide knowledgeable responses, showcasing expertise in AI engineering, RAG, vector databases, and data pipelines. Project is currently on hold due to business reasons related to target market and user interface suitability.",
-    "image": "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?q=80&w=1596&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Developed an AI agent chatbot utilizing LLM RAG system to provide knowledgeable responses, showcasing expertise in AI engineering, RAG, vector databases, and data pipelines.",
+    "image": forstokChatImage,
     "technologies": ["AI Engineering", "LLM", "RAG", "Vector Databases", "Data Pipelines", "BigQuery", "Dataflow", "dbt"],
     "technicalDetails": [
       "Implemented RAG architecture for enhanced chatbot responses",
@@ -25,8 +32,8 @@ const projectsData = [
   },
   {
     "title": "Reporting & Analytics Data Pipeline",
-    "description": "Developed and optimized data pipelines for analytics and reporting, leveraging BigQuery and data warehouses. Focused on pre-aggregation techniques to improve reporting system performance and resolve timeout issues. Project was put on hold due to business reasons, with some efforts re-focused on reporting features.",
-    "image": "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Developed and optimized data pipelines for analytics and reporting, leveraging BigQuery and data warehouses. Focused on pre-aggregation techniques to improve reporting system performance and resolve timeout issues.",
+    "image": forstokAnalyticsImage,
     "technologies": ["Data Engineering", "Data Pipelines (ELT)", "BigQuery", "Data Warehouses", "Pre-aggregation Techniques", "SQL", "MongoDB", "dbt", "Apache Superset"],
     "technicalDetails": [
       "Developed ELT data pipelines for analytics and reporting",
@@ -44,7 +51,7 @@ const projectsData = [
   {
     "title": "Text Matching Master Courier",
     "description": "Implemented a rule-based text matching system to improve master courier data using Python for enhanced matching accuracy.",
-    "image": "https://images.unsplash.com/photo-1704969724000-154d4fb94344?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "image": forstokDashboardImage,
     "technologies": ["Python", "Data Preprocessing", "Text Matching"],
     "technicalDetails": [
       "Developed a text matching system to enhance master courier data",
@@ -60,7 +67,7 @@ const projectsData = [
   {
     "title": "Item Domain System Improvement",
     "description": "Led a small backend development team working in a cross-division team to design and develop a new improved item domain system, decreasing database complexity from more than 10 relations to only 4 relations.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "image": forstokImage,
     "technologies": ["Go", "MySQL", "MongoDB", "Microservices", "gRPC", "graphQL", "Agile Development"],
     "technicalDetails": [
       "Designed a new item domain system architecture",
@@ -78,7 +85,7 @@ const projectsData = [
   {
     "title": "Machine Learning, Deep Learning Application Projects",
     "description": "Developed various machine learning and deep learning applications, showcasing proficiency in model development, training, and deployment.",
-    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "image": "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?q=80&w=1596&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "technologies": ["Machine Learning", "Deep Learning", "Model Development", "Model Training", "Model Deployment", "AI Engineering"],
     "technicalDetails": [
       "Developed diverse ML and DL applications",
@@ -191,7 +198,7 @@ const projectsData = [
   {
     "title": "Import Item",
     "description": "Developed and maintained APIs for importing item data, ensuring data integrity and efficient processing.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "image": forstokListingsImage,
     "technologies": ["Backend Development", "Microservices", "Go", "Ruby", "NodeJS", "RabbitMQ", "MongoDB", "MySQL"],
     "technicalDetails": [
       "Developed and maintained APIs for item data import",
@@ -206,7 +213,7 @@ const projectsData = [
   {
     "title": "Import Webhook Order",
     "description": "Implemented webhook-based order import functionalities, ensuring real-time data synchronization and reliability.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "image": forstokOrdersImage,
     "technologies": ["Webhooks", "Backend Development", "Microservices", "Go", "Ruby", "RabbitMQ", "MongoDB", "MySQL"],
     "technicalDetails": [
       "Implemented webhook-based order import",
@@ -221,7 +228,7 @@ const projectsData = [
   {
     "title": "Import Master Data",
     "description": "Created robust APIs for importing master data, focusing on data validation and seamless integration with existing systems.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "image": forstokListingsImage,
     "technologies": ["Backend Development", "Microservices", "Go", "Ruby", "NodeJS", "RabbitMQ", "MongoDB", "MySQL"],
     "technicalDetails": [
       "Created robust APIs for master data import",
@@ -248,21 +255,6 @@ const projectsData = [
     "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Shift%20Academy%20DS%20Bootcamp%20Batch%209",
     "period": "Mar 2021",
     "type": "bootcamp",
-    "status": "Done"
-  },
-  {
-    "title": "BRI Data Hackathon",
-    "description": "Participated in the BRI Data Hackathon, competing in two sub-competitions: People Analytics and Cash Ratio Optimization, demonstrating data analysis and problem-solving skills.",
-    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    "technologies": ["Data Analysis", "Problem Solving", "Data Science"],
-    "technicalDetails": [
-      "Competed in People Analytics sub-competition",
-      "Competed in Cash Ratio Optimization sub-competition",
-      "Demonstrated data analysis and problem-solving skills"
-    ],
-    "github": "https://github.com/hendraronaldi/machine_learning_projects/tree/main/Competitions/BRI%20Data%20Hackathon%202021",
-    "period": "Mar 2021 - Mar 2021",
-    "type": "personal",
     "status": "Done"
   },
   {
