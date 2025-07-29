@@ -41,14 +41,14 @@ const Footer: React.FC = () => {
               >
                 <Linkedin size={20} />
               </a>
-              <a
+              {/* <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition-colors"
               >
                 <Twitter size={20} />
-              </a>
+              </a> */}
               <a
                 href="mailto:contact@example.com"
                 className="bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition-colors"
