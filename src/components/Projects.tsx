@@ -330,6 +330,16 @@ const Projects: React.FC = () => {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+     // Don't handle keyboard shortcuts if user is typing in an input field
+     const activeElement = document.activeElement;
+     if (activeElement && (
+       activeElement.tagName === 'INPUT' || 
+       activeElement.tagName === 'TEXTAREA' || 
+       activeElement.isContentEditable
+     )) {
+       return;
+     }
+
       if (e.key === 'ArrowLeft') {
         prevSlide();
       } else if (e.key === 'ArrowRight') {

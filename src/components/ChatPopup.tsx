@@ -294,6 +294,10 @@ const ChatPopup: React.FC = () => {
       e.preventDefault();
       handleSendMessage();
     }
+   // Allow space key to work normally in textarea
+   if (e.key === ' ') {
+     e.stopPropagation();
+   }
   };
 
   const triggerFileInput = () => {
