@@ -90,6 +90,9 @@ const ChatPopup: React.FC = () => {
     try {
       setIsTyping(true);
 
+      // Get session ID from sessionStorage
+      const sessionId = sessionStorage.getItem('chat-session-id');
+
       const payload = {"query": content}
 
       const response = await axios.post<APIResponse>(
@@ -98,7 +101,8 @@ const ChatPopup: React.FC = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            'X-API-Key': apiKey
+            'X-API-Key': apiKey,
+            'X-Session-ID': sessionId || ''
           },
         }
       );
@@ -272,6 +276,9 @@ const ChatPopup: React.FC = () => {
     if (!message || !message.previousUserMessage) return;
 
     try {
+      // Get session ID from sessionStorage
+      const sessionId = sessionStorage.getItem('chat-session-id');
+
       await axios.post(backendProxyUrl + '/api/agent/feedback', {
         userMessage: message.previousUserMessage,
         botResponse: message.content,
@@ -280,6 +287,7 @@ const ChatPopup: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
           'X-API-Key': apiKey,
+          'X-Session-ID': sessionId || ''
         },
       });
 
