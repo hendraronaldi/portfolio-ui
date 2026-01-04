@@ -83,6 +83,24 @@ const projectsData = [
     "status": "Done"
   },
   {
+    "title": "Purwapedia Preventing Customer Churn with Machine Learning Prediction",
+    "description": "Designed as a final project for the Purwadhika JCDSOL19 program, this project utilizes an XGBoost predictive model and F2-Score optimization to identify at-risk customers, demonstrating a potential 79.7% reduction in business costs through targeted retention strategies.",
+    "image": "https://raw.githubusercontent.com/hendraronaldi/ecommerce_customer_churn/refs/heads/master/assets/dashboard.png",
+    "technologies": ["Data Science", "Machine Learning", "Data Analysis", "Data Visualization", "Project Management", "Remote Teamwork"],
+    "technicalDetails": [
+      "Utilized XGBoost for predictive modeling of customer churn",
+      "Optimized model performance using F2-Score to prioritize recall",
+      "Conducted comprehensive data analysis and visualization to inform strategies",
+      "Managed project timelines and deliverables effectively",
+      "Collaborated with a remote team to achieve project goals"
+    ],
+    "companyName": "Purwadhika Digital Talent School",
+    "companyLogo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "period": "Aug 2025 - Sep 2025",
+    "type": "bootcamp",
+    "status": "Done"
+  },
+  {
     "title": "Machine Learning, Deep Learning Application Projects",
     "description": "Developed various machine learning and deep learning applications, showcasing proficiency in model development, training, and deployment.",
     "image": "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?q=80&w=1596&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
