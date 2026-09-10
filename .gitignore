@@ -29,3 +29,5 @@ reference
 *.firebaserc
 firebase.json
 .firebase
+*.py
+__pycache__
