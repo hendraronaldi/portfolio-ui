@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Paperclip, Image, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { MessageCircle, X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import axios from 'axios';
 import initialMessages from '../data/chat-messages.json';
 
@@ -15,14 +15,75 @@ interface Message {
   content: string;
   timestamp: string;
   type: MessageType;
-  fileName?: string;
-  previousUserMessage?: string;
+  traceId?: string;
 }
 
 interface APIResponse {
   message: string;
   type: MessageType;
   error?: string;
+  trace_id?: string;
+  answer?: string;
+  intent?: string;
+  index_build_date?: string;
+  session_id?: string;
+}
+
+type Vote = 'up' | 'down';
+
+interface FeedbackEvent {
+  trace_id: string;
+  vote: Vote;
+  text?: string;
+}
+
+// Canonical feedback contract (mirrors feedback.py / backend tracing.py):
+// a feedback event is exactly {trace_id, vote: 'up'|'down', text?},
+// free text capped at 2000 chars — overlong text is rejected, never truncated.
+const MAX_FEEDBACK_TEXT_CHARS = 2000;
+// Optional conversation history emitted with each query; the backend keeps
+// its own memory fallback, so either side can evolve without breaking.
+const MAX_HISTORY_MESSAGES = 20;
+
+const USER_ID_STORAGE_KEY = 'portfolio_user_id';
+const SESSION_ID_STORAGE_KEY = 'portfolio_session_id';
+
+function getOrCreateUserId(): string {
+  try {
+    const existing = localStorage.getItem(USER_ID_STORAGE_KEY);
+    if (existing) return existing;
+    let id: string;
+    if (typeof crypto !== 'undefined' && typeof (crypto as Crypto).randomUUID === 'function') {
+      id = (crypto as Crypto).randomUUID();
+    } else {
+      id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.floor(Math.random() * 16);
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+    localStorage.setItem(USER_ID_STORAGE_KEY, id);
+    return id;
+  } catch {
+    return '';
+  }
+}
+
+function readStoredSessionId(): string | null {
+  try {
+    return sessionStorage.getItem(SESSION_ID_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeSessionId(id: string | null | undefined): void {
+  if (!id) return;
+  try {
+    sessionStorage.setItem(SESSION_ID_STORAGE_KEY, id);
+  } catch {
+    // ignore storage errors
+  }
 }
 
 const ChatPopup: React.FC = () => {
@@ -30,16 +91,22 @@ const ChatPopup: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [hasShownInitialMessages, setHasShownInitialMessages] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<Record<number, boolean>>({});
+  const [downvoteOpenId, setDownvoteOpenId] = useState<number | null>(null);
+  const [downvoteText, setDownvoteText] = useState('');
+  const [downvoteError, setDownvoteError] = useState<string | null>(null);
   const [isRateLimited, setIsRateLimited] = useState(false);
-  const [retryAttempted, setRetryAttempted] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    getOrCreateUserId();
+    setSessionId(readStoredSessionId());
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -77,7 +144,6 @@ const ChatPopup: React.FC = () => {
     // Reset rate limiting state when closing chat
     if (!isOpen) {
       setIsRateLimited(false);
-      setRetryAttempted(false);
     }
   };
 
@@ -86,23 +152,60 @@ const ChatPopup: React.FC = () => {
     return now.toISOString();
   };
 
-  const sendMessageToAPI = async (content: string, type: MessageType = 'text', file?: File): Promise<APIResponse> => {
+  const makeBotMessage = (id: number, content: string, traceId?: string): Message => ({
+    id,
+    sender: 'bot',
+    content,
+    timestamp: formatTimestamp(),
+    type: 'text',
+    traceId
+  });
+
+  const buildHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'X-API-Key': apiKey,
+      'X-User-Id': getOrCreateUserId(),
+    };
+    const sid = sessionId ?? readStoredSessionId();
+    if (sid) {
+      headers['X-Session-Id'] = sid;
+    }
+    return headers;
+  };
+
+  const captureSessionId = (responseHeaders: unknown, bodySessionId?: string | null) => {
+    const headerId =
+      (responseHeaders as Record<string, string | undefined> | undefined)?.['x-session-id'];
+    const id = headerId ?? bodySessionId ?? undefined;
+    if (id) {
+      storeSessionId(id);
+      setSessionId(id);
+    }
+  };
+
+  const sendMessageToAPI = async (content: string): Promise<APIResponse> => {
     try {
       setIsTyping(true);
 
-      const payload = {"query": content}
+      const payload: { query: string; history?: string[] } = { query: content };
+      const history = messages
+        .filter(m => m.type === 'text')
+        .map(m => m.content)
+        .slice(-MAX_HISTORY_MESSAGES);
+      if (history.length > 0) {
+        payload.history = history;
+      }
 
       const response = await axios.post<APIResponse>(
         backendProxyUrl + '/api/agent/resume', 
         payload,
         {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': apiKey
-          },
+          headers: buildHeaders(),
         }
       );
 
+      captureSessionId(response.headers, response.data?.session_id);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -120,7 +223,7 @@ const ChatPopup: React.FC = () => {
     }
   };
 
-  const handleRateLimit = async (userMessage: string, messageType: MessageType = 'text', file?: File) => {
+  const handleRateLimit = async (userMessage: string) => {
     setIsRateLimited(true);
     setError(null);
     
@@ -140,20 +243,10 @@ const ChatPopup: React.FC = () => {
     retryTimeoutRef.current = setTimeout(async () => {
       try {
         setIsTyping(true);
-        const response = await sendMessageToAPI(userMessage, messageType, file);
+        const response = await sendMessageToAPI(userMessage);
         
-        const retryBotMessage: Message = {
-          id: nextId + 1,
-          sender: 'bot',
-          content: response.message,
-          timestamp: formatTimestamp(),
-          type: 'text',
-          previousUserMessage: userMessage
-        };
-        
-        setMessages(prev => [...prev, retryBotMessage]);
+        setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
         setIsRateLimited(false);
-        setRetryAttempted(false);
       } catch (retryError) {
         if (retryError instanceof Error && retryError.name === 'RateLimitError') {
           // Second rate limit - show apology and unlock input
@@ -167,12 +260,10 @@ const ChatPopup: React.FC = () => {
           
           setMessages(prev => [...prev, apologyMessage]);
           setIsRateLimited(false);
-          setRetryAttempted(true);
         } else {
           // Other error during retry
           setError(retryError instanceof Error ? retryError.message : 'An unexpected error occurred during retry');
           setIsRateLimited(false);
-          setRetryAttempted(false);
         }
       } finally {
         setIsTyping(false);
@@ -180,53 +271,15 @@ const ChatPopup: React.FC = () => {
     }, 60000); // 1 minute
   };
   const handleSendMessage = async () => {
-    if ((!newMessage.trim() && !selectedFile) || isTyping || isRateLimited) return;
+    if (!newMessage.trim() || isTyping || isRateLimited) return;
 
     setError(null);
-    setRetryAttempted(false);
     const nextId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
     
     try {
-      if (selectedFile) {
-        const fileType = selectedFile.type.startsWith('image/') ? 'image' : 'file';
-        const fileMessage: Message = {
-          id: nextId,
-          sender: 'user',
-          content: URL.createObjectURL(selectedFile),
-          timestamp: formatTimestamp(),
-          type: fileType,
-          fileName: selectedFile.name
-        };
-        
-        setMessages(prev => [...prev, fileMessage]);
-        
-        try {
-          const response = await sendMessageToAPI(selectedFile.name, fileType, selectedFile);
-          
-          const botMessage: Message = {
-            id: nextId + 1,
-            sender: 'bot',
-            content: response.message,
-            timestamp: formatTimestamp(),
-            type: 'text'
-          };
-          
-          setMessages(prev => [...prev, botMessage]);
-        } catch (error) {
-          if (error instanceof Error && error.name === 'RateLimitError') {
-            await handleRateLimit(selectedFile.name, fileType, selectedFile);
-          } else {
-            throw error;
-          }
-        }
-        
-        setSelectedFile(null);
-      }
-      
       if (newMessage.trim()) {
-        const userMessage = newMessage.trim();
         const textMessage: Message = {
-          id: nextId + (selectedFile ? 2 : 0),
+          id: nextId,
           sender: 'user',
           content: newMessage,
           timestamp: formatTimestamp(),
@@ -238,16 +291,7 @@ const ChatPopup: React.FC = () => {
         try {
           const response = await sendMessageToAPI(newMessage);
           
-          const botMessage: Message = {
-            id: nextId + (selectedFile ? 3 : 1),
-            sender: 'bot',
-            content: response.message,
-            timestamp: formatTimestamp(),
-            type: 'text',
-            previousUserMessage: userMessage
-          };
-          
-          setMessages(prev => [...prev, botMessage]);
+          setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
         } catch (error) {
           if (error instanceof Error && error.name === 'RateLimitError') {
             await handleRateLimit(newMessage);
@@ -265,28 +309,58 @@ const ChatPopup: React.FC = () => {
     }
   };
 
-  const handleFeedback = async (messageId: number, isPositive: boolean) => {
-    if (feedbackSubmitted[messageId]) return;
-
+  const submitVote = async (messageId: number, vote: Vote, text?: string) => {
     const message = messages.find(m => m.id === messageId);
-    if (!message || !message.previousUserMessage) return;
+    if (!message || !message.traceId) return;
+
+    const event: FeedbackEvent = {
+      trace_id: message.traceId,
+      vote
+    };
+    if (typeof text === 'string' && text.trim()) {
+      event.text = text;
+    }
 
     try {
-      await axios.post(backendProxyUrl + '/api/agent/feedback', {
-        userMessage: message.previousUserMessage,
-        botResponse: message.content,
-        isPositive
-      },{
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': apiKey,
-        },
+      const response = await axios.post(backendProxyUrl + '/api/agent/feedback', event, {
+        headers: buildHeaders(),
       });
+      captureSessionId(response.headers);
 
       setFeedbackSubmitted(prev => ({ ...prev, [messageId]: true }));
+      setDownvoteOpenId(null);
+      setDownvoteText('');
+      setDownvoteError(null);
     } catch (error) {
       console.error('Failed to submit feedback:', error);
     }
+  };
+
+  const handleFeedback = async (messageId: number, isPositive: boolean) => {
+    if (feedbackSubmitted[messageId]) return;
+
+    if (isPositive) {
+      await submitVote(messageId, 'up');
+      return;
+    }
+
+    setDownvoteError(null);
+    setDownvoteText('');
+    setDownvoteOpenId(messageId);
+  };
+
+  const handleDownvoteSubmit = async (messageId: number) => {
+    if (downvoteText.length > MAX_FEEDBACK_TEXT_CHARS) {
+      setDownvoteError(`Please keep your explanation to ${MAX_FEEDBACK_TEXT_CHARS} characters or fewer.`);
+      return;
+    }
+    await submitVote(messageId, 'down', downvoteText);
+  };
+
+  const handleDownvoteCancel = () => {
+    setDownvoteOpenId(null);
+    setDownvoteText('');
+    setDownvoteError(null);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -298,21 +372,6 @@ const ChatPopup: React.FC = () => {
    if (e.key === ' ') {
      e.stopPropagation();
    }
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedFile(e.target.files[0]);
-      setError(null);
-    }
-  };
-
-  const removeSelectedFile = () => {
-    setSelectedFile(null);
   };
 
   const formatMessageTime = (timestamp: string) => {
@@ -371,53 +430,64 @@ const ChatPopup: React.FC = () => {
                   <p className="whitespace-pre-wrap">{message.content}</p>
                 )}
                 
-                {message.type === 'image' && (
-                  <div className="mb-2">
-                    <img 
-                      src={message.content} 
-                      alt="User uploaded" 
-                      className="rounded-lg max-w-full max-h-48 object-contain"
-                    />
-                    {message.fileName && (
-                      <p className="text-xs mt-1 text-gray-300">{message.fileName}</p>
-                    )}
-                  </div>
-                )}
-                
-                {message.type === 'file' && (
-                  <div className="flex items-center bg-gray-700/50 p-2 rounded">
-                    <Paperclip size={16} className="mr-2" />
-                    <span className="text-sm truncate">{message.fileName}</span>
-                  </div>
-                )}
-                
                 <div className="flex items-center justify-between mt-1">
                   <span className="text-xs opacity-70">
                     {formatMessageTime(message.timestamp)}
                   </span>
                   
-                  {message.sender === 'bot' && !message.content.includes("Hi there!") && 
+                  {message.sender === 'bot' && message.traceId && !message.content.includes("Hi there!") &&
                   !message.content.includes("I can help you with") && !message.content.includes("How can I help you today?") && (
-                    <div className="flex space-x-2 ml-4">
-                      {!feedbackSubmitted[message.id] ? (
-                        <>
-                          <button
-                            onClick={() => handleFeedback(message.id, true)}
-                            className="p-1 hover:text-green-500 hover:border hover:border-green-500 rounded transition-all"
-                            title="Helpful"
-                          >
-                            <ThumbsUp size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleFeedback(message.id, false)}
-                            className="p-1 hover:text-red-500 hover:border hover:border-red-500 rounded transition-all"
-                            title="Not helpful"
-                          >
-                            <ThumbsDown size={14} />
-                          </button>
-                        </>
-                      ) : (
-                        <span className="text-xs text-gray-400">Thanks for your feedback!</span>
+                    <div className="flex flex-col ml-4">
+                      <div className="flex space-x-2">
+                        {!feedbackSubmitted[message.id] ? (
+                          <>
+                            <button
+                              onClick={() => handleFeedback(message.id, true)}
+                              className="p-1 hover:text-green-500 hover:border hover:border-green-500 rounded transition-all"
+                              title="Helpful"
+                            >
+                              <ThumbsUp size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleFeedback(message.id, false)}
+                              className="p-1 hover:text-red-500 hover:border hover:border-red-500 rounded transition-all"
+                              title="Not helpful"
+                            >
+                              <ThumbsDown size={14} />
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-xs text-gray-400">Thanks for your feedback!</span>
+                        )}
+                      </div>
+                      {downvoteOpenId === message.id && !feedbackSubmitted[message.id] && (
+                        <div className="mt-2 w-48">
+                          <textarea
+                            value={downvoteText}
+                            onChange={(e) => setDownvoteText(e.target.value)}
+                            placeholder="What went wrong? (optional)"
+                            className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-xs text-white resize-none focus:outline-none"
+                            rows={2}
+                            maxLength={MAX_FEEDBACK_TEXT_CHARS}
+                          />
+                          {downvoteError && (
+                            <p className="text-xs text-red-400 mt-1">{downvoteError}</p>
+                          )}
+                          <div className="flex space-x-2 mt-1">
+                            <button
+                              onClick={() => handleDownvoteSubmit(message.id)}
+                              className="text-xs bg-gradient-to-r from-purple-600 to-blue-600 px-2 py-1 rounded"
+                            >
+                              Send
+                            </button>
+                            <button
+                              onClick={handleDownvoteCancel}
+                              className="text-xs px-2 py-1 rounded border border-gray-600 text-gray-300"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
                   )}
@@ -450,33 +520,6 @@ const ChatPopup: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {selectedFile && (
-          <div className="px-4 pb-2">
-            <div className="relative inline-block">
-              {selectedFile.type.startsWith('image/') ? (
-                <div className="bg-gray-800 p-2 rounded border border-gray-700">
-                  <img 
-                    src={URL.createObjectURL(selectedFile)} 
-                    alt="Preview" 
-                    className="h-20 object-contain rounded"
-                  />
-                </div>
-              ) : (
-                <div className="bg-gray-800 p-2 rounded border border-gray-700 flex items-center">
-                  <Paperclip size={16} className="mr-2" />
-                  <span className="text-sm truncate max-w-[200px]">{selectedFile.name}</span>
-                </div>
-              )}
-              <button 
-                onClick={removeSelectedFile}
-                className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 w-5 h-5 flex items-center justify-center"
-              >
-                <X size={12} />
-              </button>
-            </div>
-          </div>
-        )}
-
         <div className="p-3 border-t border-gray-800">
           <div className="flex items-center bg-gray-800 rounded-lg px-3 py-2">
             <textarea
@@ -497,14 +540,6 @@ const ChatPopup: React.FC = () => {
                 <Send size={18} />
               </button>
             </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              className="hidden"
-              accept="image/*,.pdf,.doc,.docx,.txt"
-              disabled={isRateLimited}
-            />
           </div>
         </div>
       </div>
