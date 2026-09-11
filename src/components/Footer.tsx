@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Linkedin, Twitter, Mail, ArrowUp } from 'lucide-react';
+import contactData from '../data/contact.json';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -19,14 +20,14 @@ const Footer: React.FC = () => {
             </h2>
             <p className="text-gray-400 max-w-md">
               Building intelligent solutions at the intersection of software engineering, 
-              data science, and artificial intelligence.
+              artificial intelligence, and data science.
             </p>
           </div>
           
           <div className="flex flex-col items-center md:items-end">
             <div className="flex space-x-4 mb-4">
               <a
-                href="https://github.com"
+                href="https://github.com/hendraronaldi"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition-colors"
@@ -34,7 +35,7 @@ const Footer: React.FC = () => {
                 <Github size={20} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/in/hendra-ronaldi-4a7a1b121"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition-colors"
@@ -50,7 +51,7 @@ const Footer: React.FC = () => {
                 <Twitter size={20} />
               </a> */}
               <a
-                href="mailto:contact@example.com"
+                href={`mailto:${contactData.email}`}
                 className="bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition-colors"
               >
                 <Mail size={20} />

@@ -3,30 +3,36 @@
     "name": "Certificate of Graduation Job Connector Bootcamp Data Science & Machine Learning",
     "issuer": "Purwadhika Digital Talent School",
     "year": "2025",
+    "credential_id": "202503008163",
     "url": "https://drive.google.com/file/d/1Br_sdhIqC6EaC1Gw0KAw57VuszJyAhEb/view?usp=sharing"
   },
   {
     "name": "Computer Vision Batch 3",
     "issuer": "Indonesia AI (PT. Teknologi Artifisial Indonesia)",
     "year": "2024",
+    "credential_id": "AICB2402230024",
     "url": "https://aiforindonesia.com/certificate/AICB2402230024"
   },
   {
     "name": "TensorFlow Developer Certificate",
     "issuer": "TensorFlow Certificate Program",
     "year": "2023",
+    "credential_id": "77983387",
     "url": "https://www.credential.net/589f980f-b231-44f4-8d6b-69c57a83123d"
   },
   {
     "name": "Cognizant Artificial Intelligence Virtual Experience Program",
     "issuer": "Forage",
     "year": "2023",
+    "credential_id": "Z4RsxBXZHYhZJimNC",
     "url": "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Cognizant/5N2ygyhzMWjKQmgCK_Cognizant_uEJPr8Rpqu7F7rYvB_1690620646582_completion_certificate.pdf"
   },
   {
-    "name": "Data Science Bootcamp Batch 9",
+    "name": "Certificate of Attendance Data Science Bootcamp Batch 9",
     "issuer": "Shiftacademy",
-    "year": "2021"
+    "year": "2021",
+    "credential_id": "DS9B-20210701007",
+    "url": "https://drive.google.com/file/d/1tfLPEXiKuEbqLQ16mYtOb3Eoq-jeGJPY/view?usp=sharing"
   },
   {
     "name": "Certificate of Completion",

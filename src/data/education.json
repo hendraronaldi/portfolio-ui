@@ -4,6 +4,14 @@
     "institution": "Universitas Katolik Parahyangan",
     "location": "Indonesia",
     "period": "Aug 2012 - Jul 2016",
-    "achievements": "Graduated with Cumlaude achievement, GPA: 3.68 / 4.00"
+    "achievements": "Graduated with Cumlaude achievement, GPA: 3.68 / 4.00",
+    "publications": [
+      {
+        "title": "Pemodelan dan Simulasi Reaksi Degradasi Parasetamol dengan Katalis TiO2",
+        "journal": "Jurnal Integrasi Proses Vol. 6, No. 3 (Juni 2017) 123 - 130",
+        "year": "2017",
+        "url": "https://jurnal.untirta.ac.id/index.php/jip/article/view/1328"
+      }
+    ]
   }
 ]

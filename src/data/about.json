@@ -1,33 +1,33 @@
 {
   "intro": [
-    "I'm a passionate technologist with experience in software engineering, artificial intelligence, and data science. My journey began with software development, evolved through data analytics, and now focuses on AI applications.",
-    "Highly interested in information technology and artificial intelligence. A dedicated, hard worker, and responsible person who enjoys working as a team. Always seeking to gain more knowledge and experience to get new skills.",
-    "When I'm not coding or working on AI projects, I actively contribute to team projects, share knowledge with colleagues, and explore the latest advancements in technology."
+    "I am a software engineer with over five years of expertise dedicated to architecting high-performance enterprise backend web applications, alongside more than two years specialized in modern AI engineering.",
+    "My work centers on utilizing the intersection of both disciplines, transforming experimental GenAI capabilities and agentic AI workflows into scalable production AI infrastructure.",
+    "I specialize in RAG architectures, LLM orchestration, and autonomous AI agents, with a proven track record of directing remote teams and spearheading scalable microservices development in Agile environments."
   ],
   "expertise": [
     {
-      "title": "Software Engineering",
+      "title": "Enterprise Backend & Microservices",
       "icon": "Code",
       "color": "purple",
-      "description": "Building scalable microservices applications with modern frameworks and best practices."
+      "description": "Architecting high-performance enterprise web applications, managing API lifecycles, and spearheading scalable microservices and distributed database systems."
     },
     {
-      "title": "Data Science",
-      "icon": "Database",
-      "color": "blue",
-      "description": "Extracting insights from complex datasets to drive data-informed decisions."
-    },
-    {
-      "title": "AI Engineering",
+      "title": "GenAI & LLM Orchestration",
       "icon": "Brain",
       "color": "green",
-      "description": "Creating intelligent systems using machine learning and deep learning techniques with TensorFlow."
+      "description": "Transforming experimental GenAI capabilities into scalable production AI infrastructure, focusing heavily on RAG architectures and deep LLM integration."
     },
     {
-      "title": "Team Leadership",
-      "icon": "Users",
+      "title": "Autonomous AI Agents & Workflows",
+      "icon": "Bot",
       "color": "orange",
-      "description": "Leading remote small teams in enhancing backend development with agile methodology."
+      "description": "Deploying intelligent AI chatbots and designing robust, production-ready agentic workflows with strict evaluation standards to ensure reliable and deterministic performance."
+    },
+    {
+      "title": "Scalable Data Engineering",
+      "icon": "Database",
+      "color": "blue",
+      "description": "Designing scalable data pipelines and strategic query optimization to facilitate high-quality knowledge retrieval and fast reporting."
     }
   ]
 }
