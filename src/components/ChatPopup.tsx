@@ -189,9 +189,10 @@ const ChatPopup: React.FC = () => {
       setIsTyping(true);
 
       const payload: { query: string; history?: string[] } = { query: content };
+      const seedContents = new Set(initialMessages.map((m) => m.content));
       const history = messages
-        .filter(m => m.type === 'text')
-        .map(m => m.content)
+        .filter(m => m.type === 'text' && !seedContents.has(m.content))
+        .map(m => `${m.sender}: ${m.content}`)
         .slice(-MAX_HISTORY_MESSAGES);
       if (history.length > 0) {
         payload.history = history;
