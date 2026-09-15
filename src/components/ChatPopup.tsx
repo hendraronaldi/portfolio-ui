@@ -161,6 +161,12 @@ const ChatPopup: React.FC = () => {
     traceId
   });
 
+  const isUsableResponse = (response: unknown): response is APIResponse => {
+    if (typeof response !== 'object' || response === null) return false;
+    const message = (response as APIResponse).message;
+    return typeof message === 'string' && message.trim().length > 0;
+  };
+
   const buildHeaders = (): Record<string, string> => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -245,7 +251,12 @@ const ChatPopup: React.FC = () => {
       try {
         setIsTyping(true);
         const response = await sendMessageToAPI(userMessage);
-        
+
+        if (!isUsableResponse(response)) {
+          const emptyRetry = new Error('Empty reply on retry');
+          emptyRetry.name = 'RateLimitError';
+          throw emptyRetry;
+        }
         setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
         setIsRateLimited(false);
       } catch (retryError) {
@@ -291,8 +302,12 @@ const ChatPopup: React.FC = () => {
         
         try {
           const response = await sendMessageToAPI(newMessage);
-          
-          setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
+
+          if (!isUsableResponse(response)) {
+            await handleRateLimit(newMessage);
+          } else {
+            setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
+          }
         } catch (error) {
           if (error instanceof Error && error.name === 'RateLimitError') {
             await handleRateLimit(newMessage);
