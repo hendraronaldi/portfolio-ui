@@ -308,12 +308,8 @@ const ChatPopup: React.FC = () => {
           } else {
             setMessages(prev => [...prev, makeBotMessage(nextId + 1, response.message, response.trace_id)]);
           }
-        } catch (error) {
-          if (error instanceof Error && error.name === 'RateLimitError') {
-            await handleRateLimit(newMessage);
-          } else {
-            throw error;
-          }
+        } catch {
+          await handleRateLimit(newMessage);
         }
         
         setNewMessage('');
