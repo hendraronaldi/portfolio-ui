@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Maximize2, Minimize2 } from 'lucide-react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import initialMessages from '../data/chat-messages.json';
 
 // Access the environment variables
@@ -30,6 +33,18 @@ interface APIResponse {
 }
 
 type Vote = 'up' | 'down';
+
+// Raw-HTML allowlist: the model emits <br> inside table cells, so raw HTML
+// is parsed but only harmless formatting tags survive. Event handlers are
+// stripped by react-markdown and non-http(s) URLs are blocked by default.
+const MARKDOWN_ALLOWED_ELEMENTS = [
+  'p', 'br', 'strong', 'em', 'a',
+  'ul', 'ol', 'li',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'code', 'pre', 'blockquote',
+  'table', 'thead', 'tbody', 'tr', 'th', 'td',
+  'hr', 'del', 'sup', 'sub',
+];
 
 interface FeedbackEvent {
   trace_id: string;
@@ -98,6 +113,9 @@ const ChatPopup: React.FC = () => {
   const [downvoteText, setDownvoteText] = useState('');
   const [downvoteError, setDownvoteError] = useState<string | null>(null);
   const [isRateLimited, setIsRateLimited] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const fullscreen = isFullscreen || isMobile;
   const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -106,6 +124,11 @@ const ChatPopup: React.FC = () => {
   useEffect(() => {
     getOrCreateUserId();
     setSessionId(readStoredSessionId());
+    const mq = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
   useEffect(() => {
@@ -401,7 +424,11 @@ const ChatPopup: React.FC = () => {
       </button>
 
       <div
-        className={`fixed bottom-24 right-6 w-80 md:w-96 h-[500px] bg-gray-900 rounded-lg shadow-xl border border-gray-700 flex flex-col z-40 transition-all duration-300 ease-in-out transform ${
+        className={`bg-gray-900 shadow-xl border border-gray-700 flex flex-col transition-all duration-200 ease-in-out transform ${
+          fullscreen
+            ? 'fixed bottom-0 right-0 w-screen h-screen rounded-none z-[60]'
+            : 'fixed bottom-24 right-6 w-80 md:w-96 h-[500px] rounded-lg z-40'
+        } ${
           isOpen
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-4 pointer-events-none'
@@ -417,9 +444,20 @@ const ChatPopup: React.FC = () => {
               <p className="text-xs text-gray-200">Usually replies within an hour</p>
             </div>
           </div>
-          <button onClick={toggleChat} className="text-white hover:text-gray-200">
-            <X size={20} />
-          </button>
+          <div className="flex items-center space-x-1">
+            {!isMobile && (
+              <button
+                onClick={() => setIsFullscreen(prev => !prev)}
+                className="text-white hover:text-gray-200 p-1"
+                title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+              >
+                {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+              </button>
+            )}
+            <button onClick={toggleChat} className="text-white hover:text-gray-200 p-1" title="Close chat">
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         <div 
@@ -438,8 +476,31 @@ const ChatPopup: React.FC = () => {
                     : 'bg-gray-800 text-white'
                 }`}
               >
-                {message.type === 'text' && (
+                {message.type === 'text' && message.sender === 'user' && (
                   <p className="whitespace-pre-wrap">{message.content}</p>
+                )}
+                {message.type === 'text' && message.sender !== 'user' && (
+                  <div className="markdown-bubble space-y-2 text-sm leading-relaxed [&_p]:whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_h1]:text-base [&_h1]:font-semibold [&_h2]:text-base [&_h2]:font-semibold [&_h3]:text-sm [&_h3]:font-semibold [&_h4]:text-sm [&_h4]:font-semibold [&_hr]:border-gray-700 [&_table]:block [&_table]:overflow-x-auto [&_table]:text-xs [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_td]:px-2 [&_td]:py-1 [&_td]:border-t [&_td]:border-gray-700 [&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-black/30 [&_pre]:p-2 [&_pre]:text-xs [&_code]:break-words">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                      allowedElements={MARKDOWN_ALLOWED_ELEMENTS}
+                      components={{
+                        a: ({ href, children }) => (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-sky-400 underline decoration-sky-400/60 underline-offset-2 hover:text-sky-300"
+                          >
+                            {children}
+                          </a>
+                        ),
+                      }}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
+                  </div>
                 )}
                 
                 <div className="flex items-center justify-between mt-1">
